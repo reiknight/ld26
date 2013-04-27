@@ -65,6 +65,7 @@ public class C {
     }
 
     public static enum Groups {
+        PLAYER("player"),
         BULLETS("bullets"),
         ZOMBIES("zombies"),
         BUTTONS("buttons"),
@@ -109,7 +110,10 @@ public class C {
         }
     }
 
-     public static enum Logic {
+    public static enum Logic {
+        //Square Player
+        RECTANGLE_INITIAL_SIZE(100),
+        
         ZOMBIE_SPEED((float)0.15),
         ENEMY_SPEED((float)0.20),
         SELECT_OPTION_DELAY(500),
@@ -117,7 +121,7 @@ public class C {
         NEXT_LEVEL_TIME(1500),
         ENEMY_THINK_TIME(1000),
         TILE_SIZE(32);
-
+        
         public Object data;
 
         private Logic(Object data) {
