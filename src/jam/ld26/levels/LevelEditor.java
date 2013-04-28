@@ -72,6 +72,7 @@ public class LevelEditor {
             lvlManager.addLevel(lvl.getName());
             saveLevel();
             needNewLevelName = false;
+            player.setPosition(lvl.getPlayerPosition());
         }
               
         if(placingPlayer) {
@@ -138,8 +139,10 @@ public class LevelEditor {
     }
     
     public void eraseLevel() {
-        lvl.eraseLevel();
-        msgManager.announce("Erased Map.");
+        if(!this.needNewLevelName) {
+            lvl.eraseLevel();
+            msgManager.announce("Erased Map.");
+        }
     }
     
     public void newLevel() {
@@ -152,19 +155,25 @@ public class LevelEditor {
     }
     
     public void nextLevel() {
-        lvl = lvlManager.nextLevel();
-        msgManager.announce("Map '" + lvl.getName() + "' loaded.");
-        player.setPosition(lvl.getPlayerPosition());
+        if(!this.needNewLevelName) {
+            lvl = lvlManager.nextLevel();
+            msgManager.announce("Map '" + lvl.getName() + "' loaded.");
+            player.setPosition(lvl.getPlayerPosition());
+        }
     }
         
     public void prevLevel() {
-        lvl = lvlManager.prevLevel();
-        msgManager.announce("Map '" + lvl.getName() + "' loaded.");
-        player.setPosition(lvl.getPlayerPosition());
+        if(!this.needNewLevelName) {
+            lvl = lvlManager.prevLevel();
+            msgManager.announce("Map '" + lvl.getName() + "' loaded."); 
+            player.setPosition(lvl.getPlayerPosition());
+        }
     }
     
     public void placePlayer() {
-        placingPlayer = true;
-        msgManager.fix("Move player and click to set his position.");
+        if(!this.needNewLevelName) {
+            placingPlayer = true;
+            msgManager.fix("Move player and click to set his position.");
+        }
     }
 }

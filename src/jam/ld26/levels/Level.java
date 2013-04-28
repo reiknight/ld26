@@ -37,6 +37,7 @@ public class Level {
         tileSet = new TileSet(C.Textures.DEFAULT_TILE_SET.name, tileSize);
         tileSetName = C.Textures.DEFAULT_TILE_SET.name;
         tileSetFileName = C.Textures.DEFAULT_TILE_SET.path;
+        playerPosition = new Vector2f(0, 0);
         map = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < (C.SCREEN_HEIGHT / tileSize); i += 1) {            
             map.add(new ArrayList<Integer>());
