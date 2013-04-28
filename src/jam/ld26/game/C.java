@@ -52,6 +52,9 @@ public class C {
 
     public static enum Entities {
         PLAYER("player"),
+        LAZY_TRIANGLE_ENEMY("lazy"),
+        
+        
         ZOMBIE("zombie"),
         CROSSHAIR("crosshair"),
         ENEMY("enemy"),
@@ -66,6 +69,9 @@ public class C {
 
     public static enum Groups {
         PLAYER("player"),
+        LAZY_TRIANGLE_ENEMY("lazy"),
+        
+        
         BULLETS("bullets"),
         ZOMBIES("zombies"),
         BUTTONS("buttons"),
@@ -112,7 +118,7 @@ public class C {
 
     public static enum Logic {
         //Square Player
-        RECTANGLE_INITIAL_SIZE(100),
+        RECTANGLE_INITIAL_SIZE(32),
         
         ZOMBIE_SPEED((float)0.15),
         ENEMY_SPEED((float)0.20),

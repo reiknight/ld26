@@ -11,7 +11,7 @@ import infinitedog.frisky.physics.PhysicsManager;
 import infinitedog.frisky.sounds.SoundManager;
 import jam.ld26.game.C;
 import jam.ld26.tiles.TileSet;
-import java.awt.Frame;
+import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -22,12 +22,18 @@ import org.newdawn.slick.geom.Vector2f;
  */
 public class Player extends Entity {
     //Characteristics.
-    private float velX = .3f;
-    private float velY = -.1f;
+    private float velX = .15f;
+    private float velY = -.08f;
     private int frame = 36;
+    private float g = .0001f;
+    
+    private boolean jumping = false;
+    private byte movimiento = 0;
     
     private EntityManager em = EntityManager.getInstance();
     private PhysicsManager pm = PhysicsManager.getInstance();
+    private EventManager evm = EventManager.getInstance();
+    private SoundManager sm = SoundManager.getInstance();
     
     private TileSet tileSet = new TileSet(C.Textures.TILE_SET.name, 
             (Integer) C.Logic.TILE_SIZE.data);
@@ -48,40 +54,68 @@ public class Player extends Entity {
     @Override
     public void update(GameContainer gc, int delta) {
         super.update(gc, delta);
-        
-        EventManager evm = EventManager.getInstance();
-        SoundManager sm = SoundManager.getInstance();
         float x = getX();
         float y = getY();
         float vx = 0;
-        float vy = velY;
-    
-        // Player movement
-        if(evm.isHappening(C.Events.MOVE_LEFT.name, gc)) {
-            vx -= velX * delta;
-        }else if(evm.isHappening(C.Events.MOVE_RIGHT.name, gc)) {
-            vx += velX * delta;
-        }
+        float vy = jumping?velY:0;
         
-        vy += velY*delta;
-        velY += .0001f;
+        //Comprobamos la lógica del salto.
+        vy = jump(gc, delta, vy);
+        // Player movement
+        movement(gc, delta);
+        vx = movimiento*velX*delta;
+        
+        //Actualizamos la posición
         x += vx;
         y += vy;
         this.setPosition(new Vector2f(x,y));
-
+        
         // Check if any enemy see you
-
+        ArrayList<Entity> enemies = em.getEntityGroup(C.Groups.ENEMIES.name);
+        
         if(!C.GOD_MODE) {
-
+            for(int i = 0; i < enemies.size(); i++) {
+                Enemy e = (Enemy) enemies.get(i);
+                e.hitPlayer(this);
+            }
         }
-
-        // Player action
         
-
-        // Next and previous zombie
-            
-        
-
+    }
+    
+    /**
+     * Jump logic.
+     * @param gc
+     * @param delta
+     * @param vy 
+     */
+    private float jump(GameContainer gc, int delta, float vy) {
+        if(evm.isHappening(C.Events.ACTION.name, gc)) {
+            if(!jumping) {
+                jumping = true;
+            }
+        }
+        if(jumping) {
+            vy += velY*delta;
+            velY += g*delta;
+        }
+        return vy;
+    }
+    
+    /**
+     * Movement logic.
+     * @param gc
+     * @param delta 
+     */
+    private void movement(GameContainer gc, int delta) {
+        if(!jumping) {
+            if(evm.isHappening(C.Events.MOVE_LEFT.name, gc)) {
+                movimiento = -1;
+            } else if(evm.isHappening(C.Events.MOVE_RIGHT.name, gc)) {
+                movimiento = 1;
+            } else {
+                movimiento = 0;
+            }
+        }
     }
 
     public float getVelX() {
@@ -98,6 +132,14 @@ public class Player extends Entity {
 
     public void setVelY(float velY) {
         this.velY = velY;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
     }
 
 }
