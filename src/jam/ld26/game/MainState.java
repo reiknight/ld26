@@ -38,7 +38,7 @@ public class MainState extends ManagedGameState {
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
-        lvl = new Level("fixtures/levels/dummy.json");
+        lvl = new Level("resources/levels/level1.json");
         
         try {
             lvl.load();

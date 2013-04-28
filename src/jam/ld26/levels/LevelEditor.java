@@ -23,9 +23,8 @@ public class LevelEditor {
     private MessageManager msgManager = null;
     
     public LevelEditor() {
-        lvl = new Level("fixtures/levels/dummy.json");
         msgManager = new MessageManager();
-        loadLevel();
+        newLevel();
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
@@ -110,7 +109,9 @@ public class LevelEditor {
     }
 
     public void newLevel() {
-        saveLevel();
+        if(lvl != null) {
+            saveLevel();
+        }
         lvl = new Level();
         msgManager.input("Enter new level name:");
         needNewLevelName = true;
