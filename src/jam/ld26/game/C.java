@@ -47,7 +47,7 @@ public class C {
         BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
-        DEFAULT_TILE_SET("default_tile_set", "resources/textures/tile_set.png"),
+        DEFAULT_TILE_SET("default_tile_set", "resources/textures/mapaneon.png"),
         TILE_SET("tile_set", "resources/textures/tile_set.png"),
         LOGO("logo", "resources/textures/logo.png"),
         ENEMY("enemy", "resources/textures/enemy.png");
