@@ -24,6 +24,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
 
 public class Level {
+    private String name;
     private String fileName;
     private ArrayList<ArrayList<Integer>> map;
     private int tileSize;
@@ -33,6 +34,8 @@ public class Level {
     public Level() {
         tileSize = 32;
         tileSet = new TileSet(C.Textures.DEFAULT_TILE_SET.name, tileSize);
+        tileSetName = C.Textures.DEFAULT_TILE_SET.name;
+        tileSetFileName = C.Textures.DEFAULT_TILE_SET.path;
         map = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < (C.SCREEN_HEIGHT / tileSize); i += 1) {            
             map.add(new ArrayList<Integer>());
@@ -44,6 +47,8 @@ public class Level {
     
     public Level(String fileName) {
         this.fileName = fileName;
+        String[] split = fileName.split("/");
+        this.name = split[split.length - 1];
     }
     
     public void load() throws FileNotFoundException, ParseException {
@@ -102,6 +107,15 @@ public class Level {
         fileWriter = new FileWriter(newTextFile);
         fileWriter.write(obj.toString());
         fileWriter.close();
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+        this.fileName = "resources/levels/" + name + ".json";
+    }
+    
+    public String getName() {
+        return name;
     }
     
     public int getTileSize() {
@@ -173,21 +187,24 @@ public class Level {
         try{
  
             File file1 = new File(fileName);
-            File file2 = new File(fileName + ".bak");
+            
+            if (file1.exists()) {
+                File file2 = new File(fileName + ".bak");
  
-            inStream = new FileInputStream(file1);
-            outStream = new FileOutputStream(file2); // for override file content
-            //outStream = new FileOutputStream(file2,<strong>true</strong>); // for append file content
+                inStream = new FileInputStream(file1);
+                outStream = new FileOutputStream(file2); // for override file content
+                //outStream = new FileOutputStream(file2,<strong>true</strong>); // for append file content
  
-            byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[1024];
  
-            int length;
-            while ((length = inStream.read(buffer)) > 0){
-                outStream.write(buffer, 0, length);
+                int length;
+                while ((length = inStream.read(buffer)) > 0){
+                    outStream.write(buffer, 0, length);
+                }
+ 
+                if (inStream != null)inStream.close();
+                if (outStream != null)outStream.close();
             }
- 
-            if (inStream != null)inStream.close();
-            if (outStream != null)outStream.close();
         }catch(IOException e){
             e.printStackTrace();
         }

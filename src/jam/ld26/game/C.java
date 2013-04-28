@@ -25,6 +25,7 @@ public class C {
         SAVE_LEVEL("save_level"),
         EDITOR_TILE_SET_MENU("editor_tile_set_menu"),
         EDITOR_ERASE_LEVEL("editor_erase_level"),
+        EDITOR_NEW_LEVEL("editor_new_level"),
         ACTION("action");
 
         public String name;

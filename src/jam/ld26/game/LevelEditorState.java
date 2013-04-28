@@ -33,6 +33,8 @@ public class LevelEditorState extends ManagedGameState {
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.EDITOR_ERASE_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_C, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_NEW_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_N, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
@@ -77,6 +79,8 @@ public class LevelEditorState extends ManagedGameState {
             lvlEditor.eraseLevel();
         } else if(evm.isHappening(C.Events.EDITOR_TILE_SET_MENU.name, gc)) {
             lvlEditor.toggleTileSetMenu();
+        } else if(evm.isHappening(C.Events.EDITOR_NEW_LEVEL.name, gc)) {
+            lvlEditor.newLevel();
         }
     }
 }

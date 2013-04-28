@@ -17,13 +17,14 @@ public class LevelEditor {
     private Level lvl;
     private boolean paused = false;
     private boolean showTileSetMenu = false;
+    private boolean needNewLevelName = false;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
-    private String infoMessage = null;
-    private float msgTimer = 0;
+    private MessageManager msgManager = null;
     
     public LevelEditor() {
         lvl = new Level("fixtures/levels/dummy.json");
+        msgManager = new MessageManager();
         loadLevel();
     }
     
@@ -41,19 +42,16 @@ public class LevelEditor {
         
         drawGrid(gc, g);
         drawCursor(gc, g);
-        drawMsgs(gc, g);
+        msgManager.render(gc, g);
     }
     
     public void update(GameContainer gc, int delta, CrossHair crosshair) {
         lvl.update(gc, delta);    
         hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
-                
-        if(infoMessage != null) {
-            msgTimer += delta;
-            if(msgTimer > 1000) {
-                msgTimer = 0;
-                infoMessage = null;
-            }
+        msgManager.update(gc, delta); 
+        
+        if (needNewLevelName && msgManager.isInputFinished()) {
+            lvl.setName(msgManager.getUserInput());
         }
     }
     
@@ -82,13 +80,6 @@ public class LevelEditor {
         g.fillRect(hoverTilePosition[0] * lvl.getTileSize(), hoverTilePosition[1] * lvl.getTileSize(),
             lvl.getTileSize(), lvl.getTileSize());
     }
-
-    public void drawMsgs(GameContainer gc, Graphics g) throws SlickException { 
-        g.setColor(Color.white);
-        if(infoMessage != null) {
-           g.drawString(infoMessage, 10, 10);
-        }
-    }
     
     public void toggleTileSetMenu() {
         this.showTileSetMenu = !this.showTileSetMenu;
@@ -97,7 +88,7 @@ public class LevelEditor {
     public void loadLevel() {
         try {
             lvl.load();
-            infoMessage = "Map loaded.";
+            msgManager.announce("Map loaded.");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -111,10 +102,17 @@ public class LevelEditor {
         } catch (IOException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        infoMessage = "Map saved.";
+        msgManager.announce("Map saved.");
     }
     
     public void eraseLevel() {
         lvl.eraseLevel();
+    }
+
+    public void newLevel() {
+        saveLevel();
+        lvl = new Level();
+        msgManager.input("Enter new level name:");
+        needNewLevelName = true;
     }
 }
