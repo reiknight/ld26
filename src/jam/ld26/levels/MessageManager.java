@@ -66,8 +66,10 @@ public class MessageManager implements KeyListener {
         if (inputMsg != null) {
             if (i == 14 && userInput.length() > 0) { //backspace
                 userInput = userInput.substring(0, userInput.length() - 1);
-            } else if(i == 28 && userInput.length() > 0) {
-                finishInput();
+            } else if(i == 28) { 
+                if(userInput.length() > 0) {
+                    finishInput();
+                }
             } else {
                 userInput += c;
             }

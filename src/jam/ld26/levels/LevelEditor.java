@@ -51,15 +51,18 @@ public class LevelEditor {
         
         if (needNewLevelName && msgManager.isInputFinished()) {
             lvl.setName(msgManager.getUserInput());
+            needNewLevelName = false;
         }
     }
     
     public void handleClick() {
-        if(this.showTileSetMenu) {
-            tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
-            this.showTileSetMenu = false;
-        } else {
-            lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
+        if(!this.needNewLevelName) {
+            if(this.showTileSetMenu) {
+                tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
+                this.showTileSetMenu = false;
+            } else {
+                lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
+            }
         }
     }
     
@@ -81,13 +84,15 @@ public class LevelEditor {
     }
     
     public void toggleTileSetMenu() {
-        this.showTileSetMenu = !this.showTileSetMenu;
+        if(!this.needNewLevelName) {
+            this.showTileSetMenu = !this.showTileSetMenu;
+        }
     }
     
     public void loadLevel() {
         try {
             lvl.load();
-            msgManager.announce("Map loaded.");
+            msgManager.announce("Map '" + lvl.getName() + "' loaded.");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -101,7 +106,7 @@ public class LevelEditor {
         } catch (IOException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        msgManager.announce("Map saved.");
+        msgManager.announce("Map '" + lvl.getName() + "' saved.");
     }
     
     public void eraseLevel() {
