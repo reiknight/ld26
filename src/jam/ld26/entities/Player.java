@@ -10,7 +10,9 @@ import infinitedog.frisky.events.EventManager;
 import infinitedog.frisky.physics.PhysicsManager;
 import infinitedog.frisky.sounds.SoundManager;
 import jam.ld26.game.C;
+import jam.ld26.levels.Level;
 import jam.ld26.tiles.TileSet;
+import java.io.File;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,12 +25,14 @@ import org.newdawn.slick.geom.Vector2f;
 public class Player extends Entity {
     //Characteristics.
     private float velX = .15f;
-    private float velY = -.08f;
+    private float velY = 0;
     private int frame = 36;
     private float g = .0001f;
     
     private boolean jumping = false;
     private byte movimiento = 0;
+    
+    private Level lvl;
     
     private EntityManager em = EntityManager.getInstance();
     private PhysicsManager pm = PhysicsManager.getInstance();
@@ -43,6 +47,11 @@ public class Player extends Entity {
         group = C.Groups.PLAYER.name;
         setWidth((Integer)C.Logic.RECTANGLE_INITIAL_SIZE.data);
         setHeight((Integer)C.Logic.RECTANGLE_INITIAL_SIZE.data);
+    }
+    
+    public Player(Level lvl) {
+        this();
+        this.lvl = lvl;
     }
      
     @Override
@@ -63,6 +72,57 @@ public class Player extends Entity {
         vy = jump(gc, delta, vy);
         // Player movement
         movement(gc, delta);
+        
+        //Comprobamos si esta cayendo
+        int[] position = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y+getHeight()-5));
+        try {
+            if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
+                jumping = false;
+            } else {
+                if(!jumping) {
+                    jumping = true;
+                    velY = 0f;
+                }
+            }
+        } catch(IndexOutOfBoundsException e) {
+            x = 0;
+            y = 0;
+            velY = 0;
+            jumping = false;
+        }
+        
+        //Comprobamos si esta saltando
+        position = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y));
+        try {
+            if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
+                vy = jumping?.08f:0;
+                velY = jumping?.08f:0;
+            }
+        } catch(IndexOutOfBoundsException e) {
+            vy = jumping?.08f:0;
+            velY = jumping?.08f:0;
+        }
+        
+        if(movimiento == 1) {
+            position = lvl.getTilePosition(new Vector2f(getX()+getWidth()-10,getY()+getHeight()/2));
+            try {
+                if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
+                    movimiento = 0;
+                }
+            } catch(IndexOutOfBoundsException e) {
+                movimiento = 0;
+            }
+        } else if(movimiento == -1) {
+            position = lvl.getTilePosition(new Vector2f(getX()+10,getY()+getHeight()/2));
+            try {
+                if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
+                    movimiento = 0;
+                }
+            } catch(IndexOutOfBoundsException e) {
+                movimiento = 0;
+            }
+        }
+        
         vx = movimiento*velX*delta;
         
         //Actualizamos la posición
@@ -92,6 +152,7 @@ public class Player extends Entity {
         if(evm.isHappening(C.Events.ACTION.name, gc)) {
             if(!jumping) {
                 jumping = true;
+                velY = -.08f;
             }
         }
         if(jumping) {

@@ -36,16 +36,10 @@ public class MainState extends ManagedGameState {
         //Load textures
         tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         
-        
-        Player player = new Player();
-        player.setPosition(new Vector2f(0,100));
-        em.addEntity(player.getName(), player);
-        Enemy lt = new LazyTriangleEnemy(300, 100);
-        em.addEntity(lt.getName(), lt);
-        
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
         lvl = new Level("fixtures/levels/dummy.json");
+        
         try {
             lvl.load();
         } catch (FileNotFoundException ex) {
@@ -53,6 +47,12 @@ public class MainState extends ManagedGameState {
         } catch (ParseException ex) {
             Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        
+        Player player = new Player(lvl);
+        player.setPosition(new Vector2f(0,10));
+        em.addEntity(player.getName(), player);
+        Enemy lt = new LazyTriangleEnemy(300, 100);
+        em.addEntity(lt.getName(), lt);
         
         restart();
     }
@@ -70,10 +70,6 @@ public class MainState extends ManagedGameState {
         em.update(gc, delta);
         lvl.update(gc, delta);
         Player p = (Player) em.getEntity(C.Entities.PLAYER.name);
-        if(p.getY() > 100) {
-            p.setJumping(false);
-            p.setVelY(-.08f);
-        }
         
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {
             gc.exit();
