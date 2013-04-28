@@ -44,7 +44,10 @@ public class LevelManager {
         if(levelNames.isEmpty()) {
             return null;
         }
-        currentLevelId = Math.abs((currentLevelId - 1) % levelNames.size());
+        currentLevelId = currentLevelId - 1;
+        if (currentLevelId < 0) {
+            currentLevelId = levelNames.size() - 1;
+        }
         return loadLevel();
     }
     
