@@ -11,7 +11,7 @@ public class Main extends StateBasedGame {
         super("Speed Square - v1.0");
         this.addState(new PublisherState(C.States.PUBLISHER_STATE.value));
         this.addState(new StartState(C.States.START_STATE.value));
-        //this.addState(new MainState(C.States.MAIN_STATE.value));
+        this.addState(new MainState(C.States.MAIN_STATE.value));
         this.addState(new CreditsState(C.States.CREDITS_STATE.value));
         this.addState(new InstructionsState(C.States.INSTRUCTIONS_STATE.value));
         this.addState(new LevelEditorState(C.States.LEVEL_EDITOR_STATE.value));
@@ -33,7 +33,7 @@ public class Main extends StateBasedGame {
     public void initStatesList(GameContainer gc) throws SlickException {
         this.getState(C.States.PUBLISHER_STATE.value).init(gc, this);
         this.getState(C.States.START_STATE.value).init(gc, this);
-        //this.getState(C.States.MAIN_STATE.value).init(gc, this);
+        this.getState(C.States.MAIN_STATE.value).init(gc, this);
         this.getState(C.States.CREDITS_STATE.value).init(gc, this);
         this.getState(C.States.INSTRUCTIONS_STATE.value).init(gc, this);
         this.getState(C.States.LEVEL_EDITOR_STATE.value).init(gc, this);

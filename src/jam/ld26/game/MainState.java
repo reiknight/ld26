@@ -7,6 +7,8 @@ import jam.ld26.entities.LazyTriangleEnemy;
 import jam.ld26.entities.Player;
 import jam.ld26.entities.SquareEnemy;
 import jam.ld26.levels.Level;
+import jam.ld26.levels.LevelEditor;
+import jam.ld26.levels.LevelManager;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 import org.json.simple.parser.ParseException;
@@ -20,6 +22,8 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainState extends ManagedGameState {
     private boolean paused = false;
     private Level lvl;
+    private LevelManager lvlManager = null;
+
 
     public MainState(int stateID)
     {
@@ -39,18 +43,17 @@ public class MainState extends ManagedGameState {
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
-        lvl = new Level("resources/levels/game", "pepi");
-        
         try {
-            lvl.load();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            lvlManager = new LevelManager("resources/levels/game");
         } catch (ParseException ex) {
-            Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+        lvl = lvlManager.nextLevel();
+                
         Player player = new Player(lvl);
-        player.setPosition(new Vector2f(0,10));
+        player.setPosition(lvl.getPlayerPosition());
         em.addEntity(player.getName(), player);
         Enemy lt = new SquareEnemy(300, 64, lvl);
         em.addEntity(lt.getName(), lt);
