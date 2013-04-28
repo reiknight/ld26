@@ -5,6 +5,7 @@ import infinitedog.frisky.game.ManagedGameState;
 import jam.ld26.entities.Enemy;
 import jam.ld26.entities.LazyTriangleEnemy;
 import jam.ld26.entities.Player;
+import jam.ld26.entities.SquareEnemy;
 import jam.ld26.levels.Level;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
@@ -38,7 +39,7 @@ public class MainState extends ManagedGameState {
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
-        lvl = new Level("resources/levels/level1.json");
+        lvl = new Level("resources/levels/pepi.json");
         
         try {
             lvl.load();
@@ -51,7 +52,7 @@ public class MainState extends ManagedGameState {
         Player player = new Player(lvl);
         player.setPosition(new Vector2f(0,10));
         em.addEntity(player.getName(), player);
-        Enemy lt = new LazyTriangleEnemy(300, 100);
+        Enemy lt = new SquareEnemy(300, 64, lvl);
         em.addEntity(lt.getName(), lt);
         
         restart();

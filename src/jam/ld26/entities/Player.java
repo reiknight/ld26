@@ -12,7 +12,6 @@ import infinitedog.frisky.sounds.SoundManager;
 import jam.ld26.game.C;
 import jam.ld26.levels.Level;
 import jam.ld26.tiles.TileSet;
-import java.io.File;
 import java.util.ArrayList;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -122,24 +121,28 @@ public class Player extends Entity {
                 movimiento = 0;
             }
         }
-        
-        vx = movimiento*velX*delta;
-        
-        //Actualizamos la posición
-        x += vx;
-        y += vy;
-        this.setPosition(new Vector2f(x,y));
-        
+  
         // Check if any enemy see you
         ArrayList<Entity> enemies = em.getEntityGroup(C.Groups.ENEMIES.name);
         
         if(!C.GOD_MODE) {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy e = (Enemy) enemies.get(i);
-                e.hitPlayer(this);
+                if(e.hitPlayer(this)) {
+                    x = 0;
+                    y = 0;
+                    movimiento = 0;
+                    velY = 0;
+                    jumping = false;
+                }
             }
         }
+        vx = movimiento*velX*delta; 
         
+        //Actualizamos la posición
+        x += vx;
+        y += vy;
+        this.setPosition(new Vector2f(x,y));
     }
     
     /**

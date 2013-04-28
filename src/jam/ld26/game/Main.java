@@ -8,7 +8,7 @@ import org.newdawn.slick.state.StateBasedGame;
 public class Main extends StateBasedGame {
     
     public Main() {
-        super("Game - v1.0");
+        super("Speed Square - v1.0");
         this.addState(new PublisherState(C.States.PUBLISHER_STATE.value));
         this.addState(new StartState(C.States.START_STATE.value));
         this.addState(new MainState(C.States.MAIN_STATE.value));
@@ -17,7 +17,7 @@ public class Main extends StateBasedGame {
         this.addState(new LevelEditorState(C.States.LEVEL_EDITOR_STATE.value));
         
         this.enterState(C.States.MAIN_STATE.value);
-        //this.enterState(C.States.LEVEL_EDITOR_STATE.value);
+//        this.enterState(C.States.LEVEL_EDITOR_STATE.value);
     }
     
     public static void main(String[] args) throws SlickException 

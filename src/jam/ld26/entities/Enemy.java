@@ -6,6 +6,7 @@ package jam.ld26.entities;
 
 import infinitedog.frisky.entities.Entity;
 import jam.ld26.game.C;
+import jam.ld26.levels.Level;
 import jam.ld26.tiles.TileSet;
 import org.newdawn.slick.geom.Vector2f;
 
@@ -16,6 +17,7 @@ import org.newdawn.slick.geom.Vector2f;
 public abstract class Enemy extends Entity {
     
     private static int number = 0;
+    protected Level lvl;
     
     protected TileSet tileSet = new TileSet(C.Textures.TILE_SET.name, 
             (Integer) C.Logic.TILE_SIZE.data);
@@ -28,12 +30,12 @@ public abstract class Enemy extends Entity {
         setHeight((Integer) C.Logic.TILE_SIZE.data);
     }
     
+    public Enemy(float x, float y, Level lvl) {
+        this(x, y);
+        this.lvl = lvl;
+    }
+    
     public boolean hitPlayer(Player p) {
-        if(this.r.intersects(p.getR())) {
-            System.out.println("Colisiona");
-        } else {
-            System.out.println();
-        }
         return this.r.intersects(p.getR());
     }
     
