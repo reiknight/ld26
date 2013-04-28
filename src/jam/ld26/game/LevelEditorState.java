@@ -27,13 +27,17 @@ public class LevelEditorState extends ManagedGameState {
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
         evm.addEvent(C.Events.CLICK_LEFT_EDITOR.name, new InputEvent(InputEvent.MOUSE_CLICK, 
                 Input.MOUSE_LEFT_BUTTON, (Integer) C.Logic.CLICK_EDITOR_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_NEW_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_F1,
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.LOAD_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_F2));
         evm.addEvent(C.Events.SAVE_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_F3));
         evm.addEvent(C.Events.EDITOR_TILE_SET_MENU.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_T, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.EDITOR_ERASE_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_C, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
-        evm.addEvent(C.Events.EDITOR_NEW_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_N, 
+        evm.addEvent(C.Events.EDITOR_NEXT_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_N, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_PREV_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_P, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
@@ -81,6 +85,10 @@ public class LevelEditorState extends ManagedGameState {
             lvlEditor.toggleTileSetMenu();
         } else if(evm.isHappening(C.Events.EDITOR_NEW_LEVEL.name, gc)) {
             lvlEditor.newLevel();
+        } else if(evm.isHappening(C.Events.EDITOR_NEXT_LEVEL.name, gc)) {
+            lvlEditor.nextLevel();
+        } else if(evm.isHappening(C.Events.EDITOR_PREV_LEVEL.name, gc)) {
+            lvlEditor.prevLevel();
         }
     }
 }

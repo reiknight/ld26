@@ -39,7 +39,7 @@ public class MainState extends ManagedGameState {
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
-        lvl = new Level("resources/levels/pepi.json");
+        lvl = new Level("resources/levels/game", "pepi");
         
         try {
             lvl.load();

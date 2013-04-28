@@ -25,7 +25,7 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class Level {
     private String name;
-    private String fileName;
+    private String filePath;
     private ArrayList<ArrayList<Integer>> map;
     private int tileSize;
     private String tileSetName, tileSetFileName;
@@ -45,15 +45,15 @@ public class Level {
         }    
     }
     
-    public Level(String fileName) {
-        this.fileName = fileName;
-        String[] split = fileName.split("/");
-        this.name = split[split.length - 1];
+    public Level(String filePath, String name) {
+        this.filePath = filePath;
+        this.name = name;
     }
     
     public void load() throws FileNotFoundException, ParseException {
         JSONParser parser = new JSONParser();
-        JSONObject obj = (JSONObject) parser.parse(new Scanner(new File(fileName)).useDelimiter("\\Z").next());
+        JSONObject obj = (JSONObject) parser.parse(new Scanner(
+                new File(filePath + "/" + name + ".json")).useDelimiter("\\Z").next());
         
         // Parse tileSize
         tileSize = Integer.parseInt(obj.get("tileSize").toString());
@@ -103,7 +103,7 @@ public class Level {
         backupFile();
         
         FileWriter fileWriter = null;
-        File newTextFile = new File(fileName);
+        File newTextFile = new File(filePath + "/" + name + ".json");
         fileWriter = new FileWriter(newTextFile);
         fileWriter.write(obj.toString());
         fileWriter.close();
@@ -111,7 +111,10 @@ public class Level {
     
     public void setName(String name) {
         this.name = name;
-        this.fileName = "resources/levels/" + name + ".json";
+    }
+    
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
     
     public String getName() {
@@ -186,10 +189,10 @@ public class Level {
         
         try{
  
-            File file1 = new File(fileName);
+            File file1 = new File(filePath + "/" + name + ".json");
             
             if (file1.exists()) {
-                File file2 = new File(fileName + ".bak");
+                File file2 = new File(filePath + "/" + name + ".json" + ".bak");
  
                 inStream = new FileInputStream(file1);
                 outStream = new FileOutputStream(file2); // for override file content

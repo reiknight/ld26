@@ -20,11 +20,24 @@ public class LevelEditor {
     private boolean needNewLevelName = false;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
+    private LevelManager lvlManager = null;
     private MessageManager msgManager = null;
     
     public LevelEditor() {
         msgManager = new MessageManager();
-        newLevel();
+        try {
+            lvlManager = new LevelManager("resources/levels/editor");
+        } catch (ParseException ex) {
+            Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        lvl = lvlManager.nextLevel();
+        if (lvl == null) {
+            newLevel();
+        } else {
+            loadLevel();
+        }
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
@@ -50,7 +63,10 @@ public class LevelEditor {
         msgManager.update(gc, delta); 
         
         if (needNewLevelName && msgManager.isInputFinished()) {
+            lvl.setFilePath("resources/levels/editor");
             lvl.setName(msgManager.getUserInput());
+            lvlManager.addLevel(lvl.getName());
+            saveLevel();
             needNewLevelName = false;
         }
     }
@@ -112,7 +128,7 @@ public class LevelEditor {
     public void eraseLevel() {
         lvl.eraseLevel();
     }
-
+    
     public void newLevel() {
         if(lvl != null) {
             saveLevel();
@@ -120,5 +136,15 @@ public class LevelEditor {
         lvl = new Level();
         msgManager.input("Enter new level name:");
         needNewLevelName = true;
+    }
+    
+    public void nextLevel() {
+        lvl = lvlManager.nextLevel();
+        loadLevel();
+    }
+        
+    public void prevLevel() {
+        lvl = lvlManager.prevLevel();
+        loadLevel();
     }
 }
