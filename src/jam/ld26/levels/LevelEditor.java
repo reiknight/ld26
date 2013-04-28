@@ -19,8 +19,7 @@ public class LevelEditor {
     private boolean showTileSetMenu = false;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
-    private boolean loadLevel = false;
-    private boolean saveLevel = false;
+    private String infoMessage = null;
     private float msgTimer = 0;
     
     public LevelEditor() {
@@ -49,17 +48,11 @@ public class LevelEditor {
         lvl.update(gc, delta);    
         hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
                 
-        if(loadLevel) {
+        if(infoMessage != null) {
             msgTimer += delta;
             if(msgTimer > 1000) {
                 msgTimer = 0;
-                loadLevel = false;
-            }
-        } else if(saveLevel) {
-            msgTimer += delta;
-            if(msgTimer > 1000) {
-                msgTimer = 0;
-                saveLevel = false;
+                infoMessage = null;
             }
         }
     }
@@ -92,10 +85,8 @@ public class LevelEditor {
 
     public void drawMsgs(GameContainer gc, Graphics g) throws SlickException { 
         g.setColor(Color.white);
-        if(loadLevel) {
-           g.drawString("Game loaded.", 10, 10);
-        } else if(saveLevel) {
-           g.drawString("Game saved.", 10, 10);
+        if(infoMessage != null) {
+           g.drawString(infoMessage, 10, 10);
         }
     }
     
@@ -106,7 +97,7 @@ public class LevelEditor {
     public void loadLevel() {
         try {
             lvl.load();
-            loadLevel = true;
+            infoMessage = "Map loaded.";
         } catch (FileNotFoundException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (ParseException ex) {
@@ -120,7 +111,7 @@ public class LevelEditor {
         } catch (IOException ex) {
             Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        saveLevel = true;
+        infoMessage = "Map saved.";
     }
     
     public void eraseLevel() {
