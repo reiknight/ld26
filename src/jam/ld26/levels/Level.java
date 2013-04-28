@@ -154,6 +154,18 @@ public class Level {
         map.get(position[1]).set(position[0], (id - 1) % tileSet.size());
     }
     
+    public void setTileIdAtPosition(int[] position, int id) {
+        map.get(position[1]).set(position[0], id);
+    }
+    
+    public void eraseLevel() {
+        for (int i = 0; i < getRows(); i += 1) {
+            for (int j = 0; j < getCols(); j += 1) {
+                map.get(i).set(j, 0);
+            }
+        }
+    }
+
     private void backupFile() {
         InputStream inStream = null;
         OutputStream outStream = null;

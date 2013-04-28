@@ -4,6 +4,7 @@ import infinitedog.frisky.events.InputEvent;
 import infinitedog.frisky.game.ManagedGameState;
 import jam.ld26.entities.CrossHair;
 import jam.ld26.levels.Level;
+import jam.ld26.tiles.TileSet;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -18,8 +19,10 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class LevelEditorState extends ManagedGameState {
     private boolean paused = false;
+    private boolean showTileSetMenu = false;
     private Level lvl;
     private int[] hoverTilePosition = {0,0};
+    private int tileSetIdSelected = 0;
     private boolean loadLevel = false;
     private boolean saveLevel = false;
     private float msgTimer = 0;
@@ -38,6 +41,10 @@ public class LevelEditorState extends ManagedGameState {
                 Input.MOUSE_LEFT_BUTTON, (Integer) C.Logic.CLICK_EDITOR_DELAY.data));
         evm.addEvent(C.Events.LOAD_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_F2));
         evm.addEvent(C.Events.SAVE_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_F3));
+        evm.addEvent(C.Events.EDITOR_TILE_SET_MENU.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_T, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_ERASE_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_C, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
@@ -57,7 +64,17 @@ public class LevelEditorState extends ManagedGameState {
         em.setGameState(C.States.LEVEL_EDITOR_STATE.name);
 
         em.render(gc, g);
-        lvl.render(gc, g);
+
+        if (this.showTileSetMenu) {
+            TileSet tileSet = lvl.getTileSet();
+            for(int i = 0; i < tileSet.getRows(); i += 1) {
+                for(int j = 0; j < tileSet.getCols(); j += 1) {
+                    tileSet.render(i * tileSet.getCols() + j, j, i);       
+                }
+            }
+        } else {
+            lvl.render(gc, g);
+        }
         
         drawGrid(gc, g);
         drawCursor(gc, g);
@@ -104,19 +121,26 @@ public class LevelEditorState extends ManagedGameState {
         hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
         
         if(evm.isHappening(C.Events.CLICK_LEFT_EDITOR.name, gc)) {
-            lvl.addTileIdAtPosition(hoverTilePosition);
+            if(this.showTileSetMenu) {
+                tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
+                this.showTileSetMenu = false;
+            } else {
+                lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
+            }
         }
         
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {
             gc.exit();
-        }
-        
-        if(evm.isHappening(C.Events.LOAD_LEVEL.name, gc)) {
+        } else if(evm.isHappening(C.Events.LOAD_LEVEL.name, gc)) {
             loadLevel();
+        } else if(evm.isHappening(C.Events.SAVE_LEVEL.name, gc)) {
+            saveLevel();
+        } else if(evm.isHappening(C.Events.EDITOR_ERASE_LEVEL.name, gc)) {
+            eraseLevel();
         }
         
-        if(evm.isHappening(C.Events.SAVE_LEVEL.name, gc)) {
-            saveLevel();
+        if(evm.isHappening(C.Events.EDITOR_TILE_SET_MENU.name, gc)) {
+            this.showTileSetMenu = !this.showTileSetMenu;
         }
         
         if(loadLevel) {
@@ -153,4 +177,9 @@ public class LevelEditorState extends ManagedGameState {
         }
         saveLevel = true;
     }
+    
+    public void eraseLevel() {
+        lvl.eraseLevel();
+    }
+
 }

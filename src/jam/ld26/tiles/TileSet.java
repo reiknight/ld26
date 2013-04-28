@@ -95,6 +95,14 @@ public class TileSet {
         subImage.draw(x, y);
     }
      
+    public int getRows() {
+        return rows;
+    }
+    
+    public int getCols() {
+        return cols;
+    }
+    
     public int size() {
         return cols * rows;
     }

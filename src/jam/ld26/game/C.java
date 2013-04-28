@@ -23,6 +23,8 @@ public class C {
         PREV_ZOMBIE("prev_zombie"),
         LOAD_LEVEL("load_level"),
         SAVE_LEVEL("save_level"),
+        EDITOR_TILE_SET_MENU("editor_tile_set_menu"),
+        EDITOR_ERASE_LEVEL("editor_erase_level"),
         ACTION("action");
 
         public String name;
@@ -41,7 +43,7 @@ public class C {
         BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
-        DEFAULT_TILE_SET("default_tile_set", "resources/textures/tile_setbk.png"),
+        DEFAULT_TILE_SET("default_tile_set", "resources/textures/tile_set.png"),
         TILE_SET("tile_set", "resources/textures/tile_set.png"),
         LOGO("logo", "resources/textures/logo.png"),
         ENEMY("enemy", "resources/textures/enemy.png");
@@ -129,7 +131,7 @@ public class C {
         ZOMBIE_SPEED((float)0.15),
         ENEMY_SPEED((float)0.20),
         SELECT_OPTION_DELAY(500),
-        CLICK_EDITOR_DELAY(250),
+        CLICK_EDITOR_DELAY(200),
         PUBLISHER_TIME(2000),
         NEXT_LEVEL_TIME(1500),
         ENEMY_THINK_TIME(1000),
