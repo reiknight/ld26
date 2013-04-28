@@ -37,7 +37,7 @@ public class LevelManager {
             return null;
         }
         currentLevelId = ((currentLevelId + 1) % levelNames.size());
-        return new Level(this.filePath, levelNames.get(currentLevelId));
+        return loadLevel();
     }
     
     public Level prevLevel() {
@@ -45,7 +45,7 @@ public class LevelManager {
             return null;
         }
         currentLevelId = Math.abs((currentLevelId - 1) % levelNames.size());
-        return new Level(this.filePath, levelNames.get(currentLevelId));
+        return loadLevel();
     }
     
     public void addLevel(String level) {
@@ -67,5 +67,19 @@ public class LevelManager {
         } catch (IOException ex) {
             Logger.getLogger(LevelManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+    }
+    
+    public Level loadLevel() {
+        Level lvl = new Level(this.filePath, levelNames.get(currentLevelId));
+        
+        try {
+            lvl.load();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+        return lvl;
     }
 }

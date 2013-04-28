@@ -35,8 +35,6 @@ public class LevelEditor {
         lvl = lvlManager.nextLevel();
         if (lvl == null) {
             newLevel();
-        } else {
-            loadLevel();
         }
     }
     
@@ -106,14 +104,8 @@ public class LevelEditor {
     }
     
     public void loadLevel() {
-        try {
-            lvl.load();
-            msgManager.announce("Map '" + lvl.getName() + "' loaded.");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (ParseException ex) {
-            Logger.getLogger(LevelEditorState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+        lvl = lvlManager.loadLevel();
+        msgManager.announce("Map '" + lvl.getName() + "' loaded.");
     }
     
     public void saveLevel() {
@@ -127,6 +119,7 @@ public class LevelEditor {
     
     public void eraseLevel() {
         lvl.eraseLevel();
+        msgManager.announce("Erased Map.");
     }
     
     public void newLevel() {
@@ -140,11 +133,11 @@ public class LevelEditor {
     
     public void nextLevel() {
         lvl = lvlManager.nextLevel();
-        loadLevel();
+        msgManager.announce("Map '" + lvl.getName() + "' loaded.");
     }
         
     public void prevLevel() {
         lvl = lvlManager.prevLevel();
-        loadLevel();
+        msgManager.announce("Map '" + lvl.getName() + "' loaded.");
     }
 }
