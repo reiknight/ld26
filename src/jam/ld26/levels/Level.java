@@ -30,6 +30,7 @@ public class Level {
     private int tileSize;
     private String tileSetName, tileSetFileName;
     private TileSet tileSet;
+    private Vector2f playerPosition;
     
     public Level() {
         tileSize = 32;
@@ -79,12 +80,18 @@ public class Level {
                 } 
             }
         }
+        
+        // Parse player
+        JSONObject playerObj = (JSONObject) obj.get("player");
+        this.playerPosition = new Vector2f(Float.parseFloat(playerObj.get("posX").toString()),
+                Float.parseFloat(playerObj.get("posY").toString()));
     }
     
     public void save() throws IOException {
         JSONObject obj = new JSONObject();
         JSONObject tileSetObj = new JSONObject();
         JSONArray mapObj = new JSONArray();
+        JSONObject playerObj = new JSONObject();
         
         obj.put("tileSize", tileSize);
         tileSetObj.put("name", tileSetName);
@@ -100,6 +107,10 @@ public class Level {
         }
         obj.put("map", mapObj);
         
+        playerObj.put("posX", playerPosition.x);
+        playerObj.put("posY", playerPosition.y);
+        obj.put("player", playerObj);
+                
         backupFile();
         
         FileWriter fileWriter = null;
@@ -141,6 +152,14 @@ public class Level {
         // All rows have the same columns
         return map.get(0).size();
     }
+    
+    public void setPlayerPosition(Vector2f playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+    
+    public Vector2f getPlayerPosition() {
+        return this.playerPosition;
+    }
 
     public void render(GameContainer gc, Graphics g) {
         for (int i = 0; i < getRows(); i += 1) {
@@ -152,7 +171,7 @@ public class Level {
 
     public void update(GameContainer gc, int delta) {
         
-    }    
+    }
     
     public int[] getTilePosition(Vector2f v) {
         int[] tilePosition = {0, 0};

@@ -41,6 +41,7 @@ public class LevelEditor {
             newLevel();
         }
         player = new Player(lvl);
+        player.setPosition(lvl.getPlayerPosition());
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
@@ -72,11 +73,17 @@ public class LevelEditor {
             saveLevel();
             needNewLevelName = false;
         }
+              
+        if(placingPlayer) {
+            player.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                    hoverTilePosition[1] * lvl.getTileSize()));
+        }
     }
     
     public void handleClick() {
         if(placingPlayer) {
             placingPlayer = false;
+            lvl.setPlayerPosition(new Vector2f(player.getX(), player.getY()));
             msgManager.clearMsg();
         } else {
             if(!needNewLevelName) {
@@ -103,12 +110,9 @@ public class LevelEditor {
     public void drawCursor(GameContainer gc, Graphics g) throws SlickException {
         lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
         g.setColor(new Color(255, 255, 0, 150));
-        g.fillRect(hoverTilePosition[0] * lvl.getTileSize(), hoverTilePosition[1] * lvl.getTileSize(),
-            lvl.getTileSize(), lvl.getTileSize());
-        
-        if(placingPlayer) {
-            player.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
-                    hoverTilePosition[1] * lvl.getTileSize()));
+        if(!placingPlayer) {
+            g.fillRect(hoverTilePosition[0] * lvl.getTileSize(), hoverTilePosition[1] * lvl.getTileSize(),
+                lvl.getTileSize(), lvl.getTileSize());
         }
     }
     
@@ -121,6 +125,7 @@ public class LevelEditor {
     public void loadLevel() {
         lvl = lvlManager.loadLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
+        player.setPosition(lvl.getPlayerPosition());
     }
     
     public void saveLevel() {
@@ -149,11 +154,13 @@ public class LevelEditor {
     public void nextLevel() {
         lvl = lvlManager.nextLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
+        player.setPosition(lvl.getPlayerPosition());
     }
         
     public void prevLevel() {
         lvl = lvlManager.prevLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
+        player.setPosition(lvl.getPlayerPosition());
     }
     
     public void placePlayer() {
