@@ -38,7 +38,6 @@ public class MainState extends ManagedGameState {
         Enemy lt = new LazyTriangleEnemy(300, 100);
         em.addEntity(lt.getName(), lt);
         
-        
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 
         restart();

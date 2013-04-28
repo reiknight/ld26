@@ -31,7 +31,7 @@ public class StartState extends ManagedGameState {
         //Add events
         evm.addEvent(C.Events.CLICK_BUTTON.name, new InputEvent(InputEvent.MOUSE_CLICK, 
                 Input.MOUSE_LEFT_BUTTON, (Integer) C.Logic.SELECT_OPTION_DELAY.data));
-                //Crosshair movement
+        //Crosshair movement
         evm.addEvent(C.Events.CROSSHAIR_MOVED.name, new InputEvent(InputEvent.MOUSE_MOVE, 
                 new Rectangle(0, 0, C.SCREEN_WIDTH, C.SCREEN_HEIGHT)));
         //Load textures

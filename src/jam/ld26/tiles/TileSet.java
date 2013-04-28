@@ -94,4 +94,8 @@ public class TileSet {
         subImage = this.image.getSubImage(j  * tileSize, i  * tileSize, tileSize * n, tileSize * m);
         subImage.draw(x, y);
     }
+     
+    public int size() {
+        return cols * rows;
+    }
 }

@@ -14,6 +14,7 @@ public class Main extends StateBasedGame {
         this.addState(new MainState(C.States.MAIN_STATE.value));
         this.addState(new CreditsState(C.States.CREDITS_STATE.value));
         this.addState(new InstructionsState(C.States.INSTRUCTIONS_STATE.value));
+        this.addState(new LevelEditorState(C.States.LEVEL_EDITOR_STATE.value));
         
         this.enterState(C.States.MAIN_STATE.value);
     }
@@ -34,5 +35,6 @@ public class Main extends StateBasedGame {
         this.getState(C.States.MAIN_STATE.value).init(gc, this);
         this.getState(C.States.CREDITS_STATE.value).init(gc, this);
         this.getState(C.States.INSTRUCTIONS_STATE.value).init(gc, this);
+        this.getState(C.States.LEVEL_EDITOR_STATE.value).init(gc, this);
     }
 }

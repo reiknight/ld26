@@ -5,7 +5,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class C {
     public static final boolean DEBUG_MODE = false;
     public static final boolean GOD_MODE = false;
-    public static final int SCREEN_HEIGHT = 600;
+    public static final int SCREEN_HEIGHT = 640;
     public static final int SCREEN_WIDTH = 800;
 
     public static enum Events {
@@ -16,9 +16,13 @@ public class C {
         MOVE_DOWN("move_down"),
         BACK("back"),
         CLICK_BUTTON("click_button"),
+        CLICK_LEFT_EDITOR("click_left_editor"),
+        CLICK_RIGHT_EDITOR("click_right_editor"),
         CROSSHAIR_MOVED("crosshair_moved"),
         NEXT_ZOMBIE("next_zombie"),
         PREV_ZOMBIE("prev_zombie"),
+        LOAD_LEVEL("load_level"),
+        SAVE_LEVEL("save_level"),
         ACTION("action");
 
         public String name;
@@ -37,6 +41,7 @@ public class C {
         BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
+        DEFAULT_TILE_SET("default_tile_set", "resources/textures/tile_setbk.png"),
         TILE_SET("tile_set", "resources/textures/tile_set.png"),
         LOGO("logo", "resources/textures/logo.png"),
         ENEMY("enemy", "resources/textures/enemy.png");
@@ -105,6 +110,7 @@ public class C {
         MAIN_STATE("main", 1),
         PUBLISHER_STATE("publisher", 2),
         INSTRUCTIONS_STATE("instructions", 3),
+        LEVEL_EDITOR_STATE("level_editor", 4),
         CREDITS_STATE("credits", 9);
 
         public String name;
@@ -123,6 +129,7 @@ public class C {
         ZOMBIE_SPEED((float)0.15),
         ENEMY_SPEED((float)0.20),
         SELECT_OPTION_DELAY(500),
+        CLICK_EDITOR_DELAY(250),
         PUBLISHER_TIME(2000),
         NEXT_LEVEL_TIME(1500),
         ENEMY_THINK_TIME(1000),

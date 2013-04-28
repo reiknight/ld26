@@ -1,10 +1,13 @@
 package jam.ld26.levels;
 
+import infinitedog.frisky.textures.TextureManager;
 import jam.ld26.levels.Level;
+import jam.ld26.tiles.TileSet;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 import static junit.framework.Assert.assertEquals;
@@ -17,16 +20,21 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.util.ResourceLoader;
+import org.newdawn.slick.util.ResourceLocation;
 
 public class LevelTest extends TestCase {
     private static Level lvl;
+
     private String dummyLevelFile = "fixtures/levels/dummy.json";
        
     public LevelTest() {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() throws SlickException {
         try {
             lvl = new Level(dummyLevelFile);
         } catch (FileNotFoundException ex) {
@@ -38,6 +46,14 @@ public class LevelTest extends TestCase {
     
     @After
     public void tearDown() {
+    }
+    
+    public void testGetTileSize() {
+        assertEquals(32, lvl.getTileSize());
+    }
+    
+    public void testGetTileSet() {
+        //assertEquals(new TileSet("dummy_tileset", 32), lvl.getTileSet());
     }
 
     public void testGetRows() {
