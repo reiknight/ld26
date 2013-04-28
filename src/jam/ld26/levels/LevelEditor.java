@@ -1,6 +1,7 @@
 package jam.ld26.levels;
 
 import jam.ld26.entities.CrossHair;
+import jam.ld26.entities.Player;
 import jam.ld26.game.C;
 import jam.ld26.game.LevelEditorState;
 import jam.ld26.tiles.TileSet;
@@ -12,12 +13,15 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 public class LevelEditor {
     private Level lvl;
+    private Player player;
     private boolean paused = false;
     private boolean showTileSetMenu = false;
     private boolean needNewLevelName = false;
+    private boolean placingPlayer = false;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
     private LevelManager lvlManager = null;
@@ -36,6 +40,7 @@ public class LevelEditor {
         if (lvl == null) {
             newLevel();
         }
+        player = new Player(lvl);
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
@@ -48,11 +53,11 @@ public class LevelEditor {
             }
         } else {
             lvl.render(gc, g);
+            player.render(gc, g);        
+            drawCursor(gc, g);
+            msgManager.render(gc, g);
         }
-        
         drawGrid(gc, g);
-        drawCursor(gc, g);
-        msgManager.render(gc, g);
     }
     
     public void update(GameContainer gc, int delta, CrossHair crosshair) {
@@ -70,12 +75,17 @@ public class LevelEditor {
     }
     
     public void handleClick() {
-        if(!this.needNewLevelName) {
-            if(this.showTileSetMenu) {
-                tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
-                this.showTileSetMenu = false;
-            } else {
-                lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
+        if(placingPlayer) {
+            placingPlayer = false;
+            msgManager.clearMsg();
+        } else {
+            if(!needNewLevelName) {
+                if(showTileSetMenu) {
+                    tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
+                    showTileSetMenu = false;
+                } else {
+                    lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
+                }
             }
         }
     }
@@ -95,6 +105,11 @@ public class LevelEditor {
         g.setColor(new Color(255, 255, 0, 150));
         g.fillRect(hoverTilePosition[0] * lvl.getTileSize(), hoverTilePosition[1] * lvl.getTileSize(),
             lvl.getTileSize(), lvl.getTileSize());
+        
+        if(placingPlayer) {
+            player.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                    hoverTilePosition[1] * lvl.getTileSize()));
+        }
     }
     
     public void toggleTileSetMenu() {
@@ -139,5 +154,10 @@ public class LevelEditor {
     public void prevLevel() {
         lvl = lvlManager.prevLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
+    }
+    
+    public void placePlayer() {
+        placingPlayer = true;
+        msgManager.fix("Move player and click to set his position.");
     }
 }

@@ -8,7 +8,7 @@ import org.newdawn.slick.KeyListener;
 
 public class MessageManager implements KeyListener {
     static final int ANNOUNCE_MAX_TIME = 1000;
-    private String announce = null, inputMsg = null;
+    private String announce = null, inputMsg = null, fixMsg = null;
     private String userInput = "";
     private float announceTimer = 0;
     private Input input = null;
@@ -19,11 +19,15 @@ public class MessageManager implements KeyListener {
     }
     
     public void render(GameContainer gc, Graphics g) {
-        g.setColor(Color.white);
         if(announce != null) {
+           g.setColor(Color.white);
            g.drawString(announce, 10, 10);
         } else if(inputMsg != null) {
+           g.setColor(Color.lightGray);
            g.drawString(inputMsg + " " + userInput, 10, 10);
+        } else if(fixMsg != null) {
+           g.setColor(Color.yellow);
+           g.drawString(fixMsg, 10, 10);
         }
     }
     
@@ -46,6 +50,14 @@ public class MessageManager implements KeyListener {
     public void input(String msg) {
         inputMsg = msg;
         inputFinished = false;
+    }
+    
+    public void fix(String msg) {
+        fixMsg = msg;
+    }
+        
+    public void clearMsg() {
+        fixMsg = null;
     }
     
     public String getUserInput() {

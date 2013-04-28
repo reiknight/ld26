@@ -28,6 +28,7 @@ public class C {
         EDITOR_NEW_LEVEL("editor_new_level"),
         EDITOR_NEXT_LEVEL("editor_next_level"),
         EDITOR_PREV_LEVEL("editor_prev_level"),
+        EDITOR_PLACE_PLAYER("editor_place_players"),
         ACTION("action");
 
         public String name;

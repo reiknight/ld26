@@ -39,9 +39,12 @@ public class LevelEditorState extends ManagedGameState {
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.EDITOR_PREV_LEVEL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_P, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_PLACE_PLAYER.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_H, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
+        tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         
         //Crosshair movement
         evm.addEvent(C.Events.CROSSHAIR_MOVED.name, new InputEvent(InputEvent.MOUSE_MOVE, 
@@ -89,6 +92,8 @@ public class LevelEditorState extends ManagedGameState {
             lvlEditor.nextLevel();
         } else if(evm.isHappening(C.Events.EDITOR_PREV_LEVEL.name, gc)) {
             lvlEditor.prevLevel();
+        } else if(evm.isHappening(C.Events.EDITOR_PLACE_PLAYER.name, gc)) {
+            lvlEditor.placePlayer();
         }
     }
 }
