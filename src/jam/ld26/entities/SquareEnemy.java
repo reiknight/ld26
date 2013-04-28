@@ -35,7 +35,7 @@ public class SquareEnemy extends Enemy {
         float x = getX();
         float y = getY();
         if(movimiento == 1) {
-            int[] position = lvl.getTilePosition(new Vector2f(getX()+getWidth()-10,getY()+getHeight()/2));
+            int[] position = lvl.getTilePosition(new Vector2f(getX()+getWidth()+12,getY()+getHeight()/2));
             try {
                 if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
                     movimiento = -1;
@@ -46,7 +46,7 @@ public class SquareEnemy extends Enemy {
                 movimiento = -1;
             }
         } else if(movimiento == -1) {
-            int[] position = lvl.getTilePosition(new Vector2f(getX()+10,getY()+getHeight()/2));
+            int[] position = lvl.getTilePosition(new Vector2f(getX()-12,getY()+getHeight()/2));
             try {
                 if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
                     movimiento = 1;

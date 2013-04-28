@@ -83,9 +83,9 @@ public class Player extends Entity {
                     velY = 0f;
                 }
             }
-        } catch(IndexOutOfBoundsException e) {
-            x = 0;
-            y = 0;
+        } catch(IndexOutOfBoundsException e) {  
+            x = lvl.getPlayerPosition().x;
+            y = lvl.getPlayerPosition().y;
             velY = 0;
             jumping = false;
         }
@@ -129,8 +129,8 @@ public class Player extends Entity {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy e = (Enemy) enemies.get(i);
                 if(e.hitPlayer(this)) {
-                    x = 0;
-                    y = 0;
+                    x = lvl.getPlayerPosition().x;
+                    y = lvl.getPlayerPosition().y;
                     movimiento = 0;
                     velY = 0;
                     jumping = false;
