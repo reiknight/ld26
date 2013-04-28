@@ -63,7 +63,6 @@ public class MessageManager implements KeyListener {
 
     @Override
     public void keyPressed(int i, char c) {
-        System.out.println(i);
         if (inputMsg != null) {
             if (i == 14 && userInput.length() > 0) { //backspace
                 userInput = userInput.substring(0, userInput.length() - 1);
