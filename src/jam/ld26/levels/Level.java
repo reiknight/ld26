@@ -244,7 +244,19 @@ public class Level {
     }
     
     public void addEnemy(Enemy enemy) {
-        enemies.add(enemy);
+        int deleteId = -1;
+        for (int i = 0; i < enemies.size(); i++) {
+            Enemy e = (Enemy) enemies.get(i);
+            if (e.getX() == enemy.getX() && e.getY() == enemy.getY()) {
+                deleteId = i;
+                break;
+            }
+        }
+        if(deleteId != -1) {
+            enemies.remove(deleteId);
+        } else {
+            enemies.add(enemy);
+        }
     }
 
     private void backupFile() {
