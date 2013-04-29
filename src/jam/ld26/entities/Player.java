@@ -80,17 +80,24 @@ public class Player extends Entity {
         try {
             int f = lvl.getMap().get(position[1]).get(position[0]);
             if(f != 0) {
-                if(jumping && f < 21) {    
+                if(jumping && velY > 0 && f < 21) {    
                     int color = rand.nextInt(3)+1;
                     lightFrom(position[1],position[0], color);
                     lvl.getMap().get(position[1]).remove(position[0]);
                     lvl.getMap().get(position[1]).add(position[0],f+21*color);
+                } else if(jumping && velY <= 0) {
+                    lightOff(position[1], position[0]);
+                    lvl.getMap().get(position[1]).remove(position[0]);
+                    lvl.getMap().get(position[1]).add(position[0],f%21);
                 }
                 jumping = false;
             } else {
                 if(!jumping) {
                     jumping = true;
                     velY = 0f;
+                    try {
+                        lightOff(position[1],position[0]-1);
+                    } catch(IndexOutOfBoundsException e) { }
                 }
             }
         } catch(IndexOutOfBoundsException e) {  
@@ -224,7 +231,7 @@ public class Player extends Entity {
         }
     }
     
-    public void lightOff(int x, int y, int color) {
+    public void lightOff(int x, int y) {
         int posAnterior = lvl.getMap().get(x).get(y)%21;
         for(int i = y+1; i < lvl.getMap().get(x).size(); i++) {
             int pos = lvl.getMap().get(x).get(i)%21;
