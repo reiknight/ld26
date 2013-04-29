@@ -36,7 +36,6 @@ public class Player extends Entity {
     
     private Random rand = new Random();
     
-    private EntityManager em = EntityManager.getInstance();
     private PhysicsManager pm = PhysicsManager.getInstance();
     private EventManager evm = EventManager.getInstance();
     private SoundManager sm = SoundManager.getInstance();
@@ -140,8 +139,7 @@ public class Player extends Entity {
         }
   
         // Check if any enemy see you
-        //ArrayList<Entity> enemies = em.getEntityGroup(C.Groups.ENEMIES.name);
-        ArrayList<Entity> enemies = new ArrayList<Entity>();
+        ArrayList<Enemy> enemies = lvl.getEnemies();
         
         if(!C.GOD_MODE) {
             for(int i = 0; i < enemies.size(); i++) {
@@ -264,7 +262,7 @@ public class Player extends Entity {
     }
        
     public boolean won() {
-        Goal goal = (Goal)em.getEntity(C.Entities.GOAL.name);
+        Goal goal = lvl.getGoal();
         if(goal != null && goal.hitPlayer(this)) {
             return true;
         }

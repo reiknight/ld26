@@ -52,17 +52,6 @@ public class MainState extends ManagedGameState {
             Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         lvl = lvlManager.nextLevel();
-                
-        Player player = new Player(lvl);
-        player.setPosition(lvl.getPlayerPosition());
-        em.addEntity(player.getName(), player);
-        Enemy lt = new SquareEnemy(300, 256, lvl);
-        Enemy lt2 = new LazyTriangleEnemy(300, 256, lvl);
-//        em.addEntity(lt.getName(), lt);
-//        em.addEntity(lt2.getName(), lt2);
-        Goal goal = new Goal(300, 256);
-        em.addEntity(goal.getName(), goal);
-        
         restart();
     }
     
@@ -78,13 +67,9 @@ public class MainState extends ManagedGameState {
         evm.update(gc, delta);
         em.update(gc, delta);
         lvl.update(gc, delta);
-        Player p = (Player) em.getEntity(C.Entities.PLAYER.name);
+        Player p = lvl.getPlayer();
         if(p.won()) {
-            em.removeEntityGroup(C.Groups.ENEMIES.name);
-            em.removeEntityGroup(C.Groups.GOAL.name);
             lvl = lvlManager.nextLevel();
-            p.reset(lvl);
-            //TODO: Logica de añadido de enemigos.
         }
         
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {

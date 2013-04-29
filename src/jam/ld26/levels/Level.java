@@ -211,6 +211,18 @@ public class Level {
         return this.playerPosition;
     }
     
+    public Player getPlayer() {
+        return player;
+    }
+    
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
+    }
+    
+    public Goal getGoal() {
+        return goal;
+    }
+    
     public void setGoalPosition(Vector2f goalPosition) {
         this.goalPosition = goalPosition;
         this.goal.setPosition(goalPosition);
