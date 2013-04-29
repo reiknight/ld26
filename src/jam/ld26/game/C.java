@@ -47,7 +47,8 @@ public class C {
         BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
-        DEFAULT_TILE_SET("default_tile_set", "resources/textures/mapaneon.png"),
+        DEFAULT_TILE_SET("default_tile_set", "resources/textures/mapaneon2.png"),
+        ENEMIES_TILE_SET("enemies_tile_set", "resources/textures/mapapersonajes.png"),
         TILE_SET("tile_set", "resources/textures/tile_set.png"),
         LOGO("logo", "resources/textures/logo.png"),
         ENEMY("enemy", "resources/textures/enemy.png");
@@ -63,12 +64,15 @@ public class C {
 
     public static enum Entities {
         PLAYER("player"),
+        ENEMY("enemy"),
+        GOAL("goal"),
         LAZY_TRIANGLE_ENEMY("lazy"),
+        
         
         
         ZOMBIE("zombie"),
         CROSSHAIR("crosshair"),
-        ENEMY("enemy"),
+        
         WALL("wall");
 
         public String name;
@@ -81,12 +85,13 @@ public class C {
     public static enum Groups {
         PLAYER("player"),
         LAZY_TRIANGLE_ENEMY("lazy"),
+        ENEMIES("enemies"),
+        GOAL("goal"),
         
         
         BULLETS("bullets"),
         ZOMBIES("zombies"),
         BUTTONS("buttons"),
-        ENEMIES("enemies"),
         WALLS("walls");
 
         public String name;

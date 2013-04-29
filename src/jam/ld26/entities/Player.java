@@ -181,6 +181,19 @@ public class Player extends Entity {
             }
         }
     }
+       
+    public boolean won() {
+        Goal goal = (Goal)em.getEntity(C.Entities.GOAL.name);
+        if(goal != null && goal.hitPlayer(this)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void reset(Level lvl) {
+        this.lvl = lvl;
+        this.setPosition(lvl.getPlayerPosition());
+    }
 
     public float getVelX() {
         return velX;

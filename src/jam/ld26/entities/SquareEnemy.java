@@ -26,7 +26,7 @@ public class SquareEnemy extends Enemy {
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
-        tileSet.render(32, getX(), getY());
+        tileSet.render(2, getX(), getY());
     }
 
     @Override
