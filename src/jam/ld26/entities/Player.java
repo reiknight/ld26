@@ -159,7 +159,7 @@ public class Player extends Entity {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy e = (Enemy) enemies.get(i);
                 if(e.hitPlayer(this)) {
-                    
+                    sm.playSound(C.Sounds.MUERTE.name);
                     try {
                         int[] position2 = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y+getHeight()-5));
                         int f = lvl.getMap().get(position2[1]).get(position2[0]);
@@ -193,6 +193,7 @@ public class Player extends Entity {
     private float jump(GameContainer gc, int delta, float vy) {
         if(evm.isHappening(C.Events.ACTION.name, gc)) {
             if(!jumping) {
+                sm.playSound(C.Sounds.JUMP.name);
                 jumping = true;
                 velY = -.08f;
                 
@@ -223,6 +224,7 @@ public class Player extends Entity {
     }
     
     public void lightFrom(int x, int y, int color) {
+        sm.playSound(C.Sounds.ENCENDIDO.name);
         int posAnterior = lvl.getMap().get(x).get(y);
         for(int i = y+1; i < lvl.getMap().get(x).size(); i++) {
             int pos = lvl.getMap().get(x).get(i);

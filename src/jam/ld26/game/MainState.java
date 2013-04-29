@@ -41,6 +41,11 @@ public class MainState extends ManagedGameState {
         //Load textures
         tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         tm.addTexture(C.Textures.ENEMIES_TILE_SET.name, C.Textures.ENEMIES_TILE_SET.path);
+        //Load sounds
+        //Load sounds
+        sm.addSound(C.Sounds.ENCENDIDO.name, C.Sounds.ENCENDIDO.path);
+        sm.addSound(C.Sounds.JUMP.name, C.Sounds.JUMP.path);
+        sm.addSound(C.Sounds.MUERTE.name, C.Sounds.MUERTE.path);
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 

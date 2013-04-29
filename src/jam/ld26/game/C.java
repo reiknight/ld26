@@ -117,9 +117,9 @@ public class C {
     }
 
     public static enum Sounds {
-        ZOMBIE_BITE("zombie_bite", "resources/sounds/zombie4.wav"),
-        ZOMBIE_GROWL("zombie_growl", "resources/sounds/zombie2.wav"),
-        FIRE("fire", "resources/sounds/fire.wav"),
+        JUMP("jump", "resources/sounds/jump.wav"),
+        ENCENDIDO("encendido", "resources/sounds/encendido.wav"),
+        MUERTE("muerte", "resources/sounds/muerte.wav"),
         MUSIC("music", "resources/music.ogg");
 
         public String name;
