@@ -28,7 +28,7 @@ public class LevelEditor {
     private MessageManager msgManager = null;
     
     static enum State { 
-        DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY 
+        DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY, PLACING_GOAL
     };
     
     public LevelEditor() {
@@ -55,12 +55,12 @@ public class LevelEditor {
                     tileSet.render(i * tileSet.getCols() + j, j, i);       
                 }
             }
-        } else {
+        } else if (state != State.CREATING_NEW_LEVEL) {
             lvl.render(gc, g);      
             drawCursor(gc, g);
-            msgManager.render(gc, g);
+            drawGrid(gc, g);
         }
-        drawGrid(gc, g);
+        msgManager.render(gc, g);
     }
     
     public void update(GameContainer gc, int delta, CrossHair crosshair) {
@@ -79,6 +79,9 @@ public class LevelEditor {
         if(state == State.PLACING_PLAYER) {
             lvl.setPlayerPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
                     hoverTilePosition[1] * lvl.getTileSize()));
+        } else if (state == State.PLACING_GOAL) {
+            lvl.setGoalPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                    hoverTilePosition[1] * lvl.getTileSize()));
         } else if (state == State.PLACING_ENEMY) {
             dummyEnemy.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
                     hoverTilePosition[1] * lvl.getTileSize()));
@@ -92,6 +95,8 @@ public class LevelEditor {
             } else if(state == State.PLACING_ENEMY) {
                 lvl.addEnemy(dummyEnemy);
                 msgManager.clearMsg();
+            } else if(state == State.PLACING_GOAL) {
+               msgManager.clearMsg();
             } else if(state == State.CHOOSING_TILE) {
                 tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
             } else { // Drawing
@@ -116,7 +121,7 @@ public class LevelEditor {
         if (state == State.PLACING_ENEMY) {
             dummyEnemy.render(gc, g);
         } else {
-            if (state != State.PLACING_PLAYER) {
+            if (state != State.PLACING_PLAYER && state != State.PLACING_GOAL) {
                 lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
             }
         }
@@ -189,6 +194,13 @@ public class LevelEditor {
             dummyEnemy = EnemyFactory.createEnemy(enemyIdSelected, new Vector2f(0,0), lvl);
             enemyIdSelected = (enemyIdSelected + 1) % 2;
             msgManager.fix("Move enemy and click to set his position. Press E again to change enemy type.");
+        }
+    }
+    
+    public void placeGoal() {
+        if(state != State.CREATING_NEW_LEVEL) {
+            state = State.PLACING_GOAL;
+            msgManager.fix("Move goal and click to set its position.");
         }
     }
 }

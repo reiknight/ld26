@@ -43,6 +43,8 @@ public class LevelEditorState extends ManagedGameState {
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.EDITOR_PLACE_ENEMY.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_E, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_PLACE_GOAL.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_G, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
@@ -99,6 +101,8 @@ public class LevelEditorState extends ManagedGameState {
             lvlEditor.placePlayer();
         } else if(evm.isHappening(C.Events.EDITOR_PLACE_ENEMY.name, gc)) {
             lvlEditor.placeEnemy();
+        } else if(evm.isHappening(C.Events.EDITOR_PLACE_GOAL.name, gc)) {
+            lvlEditor.placeGoal();
         }
     }
 }

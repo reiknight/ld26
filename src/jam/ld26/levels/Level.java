@@ -3,6 +3,7 @@ package jam.ld26.levels;
 import infinitedog.frisky.textures.TextureManager;
 import jam.ld26.entities.Enemy;
 import jam.ld26.entities.EnemyFactory;
+import jam.ld26.entities.Goal;
 import jam.ld26.entities.Player;
 import jam.ld26.game.C;
 import jam.ld26.tiles.TileSet;
@@ -32,7 +33,9 @@ public class Level {
     private String tileSetName, tileSetFileName;
     private TileSet tileSet;
     private Vector2f playerPosition;
+    private Vector2f goalPosition;
     private Player player;
+    private Goal goal;
     private ArrayList<Enemy> enemies;
     
     public Level() {
@@ -43,6 +46,7 @@ public class Level {
         playerPosition = new Vector2f(0, 0);
         player = new Player();
         player.reset(this);
+        goal = new Goal(new Vector2f(0, 0), this);
         enemies = new ArrayList<Enemy>();
         map = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < (C.SCREEN_HEIGHT / tileSize); i += 1) {            
@@ -106,6 +110,15 @@ public class Level {
                         this));
             }
         }
+        
+        // Parse goal
+        goal = new Goal(new Vector2f(0,0), this);
+        JSONObject goalObj = (JSONObject) obj.get("goal");
+        if(goalObj != null) {
+            this.goalPosition = new Vector2f(Float.parseFloat(goalObj.get("posX").toString()),
+                    Float.parseFloat(goalObj.get("posY").toString()));
+            goal.setPosition(goalPosition);
+        }
     }
     
     public void save() throws IOException {
@@ -114,6 +127,7 @@ public class Level {
         JSONArray mapObj = new JSONArray();
         JSONObject playerObj = new JSONObject();
         JSONArray enemiesObj = new JSONArray();
+        JSONObject goalObj = new JSONObject();
         
         obj.put("tileSize", tileSize);
         tileSetObj.put("name", tileSetName);
@@ -140,7 +154,11 @@ public class Level {
             enemyObj.put("posY", enemies.get(i).getY());
             enemiesObj.add(enemyObj);
         }
-        obj.put("enemies", enemiesObj);        
+        obj.put("enemies", enemiesObj);    
+        
+        goalObj.put("posX", goal.getX());
+        goalObj.put("posY", goal.getY());
+        obj.put("goal", goalObj);
         
         backupFile();
         
@@ -192,6 +210,15 @@ public class Level {
     public Vector2f getPlayerPosition() {
         return this.playerPosition;
     }
+    
+    public void setGoalPosition(Vector2f goalPosition) {
+        this.goalPosition = goalPosition;
+        this.goal.setPosition(goalPosition);
+    }
+    
+    public Vector2f getGoalPosition() {
+        return this.goalPosition;
+    }
 
     public void render(GameContainer gc, Graphics g) {
         for (int i = 0; i < getRows(); i += 1) {
@@ -200,6 +227,7 @@ public class Level {
             }
         }
         player.render(gc, g);
+        goal.render(gc, g);
         
         for (int i = 0; i < enemies.size(); i++) {
             ((Enemy) enemies.get(i)).render(gc, g);
@@ -208,6 +236,7 @@ public class Level {
 
     public void update(GameContainer gc, int delta) {
         player.update(gc, delta);
+        goal.update(gc, delta);
         
         for (int i = 0; i < enemies.size(); i++) {
             ((Enemy) enemies.get(i)).update(gc, delta);

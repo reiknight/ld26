@@ -30,6 +30,7 @@ public class C {
         EDITOR_PREV_LEVEL("editor_prev_level"),
         EDITOR_PLACE_PLAYER("editor_place_player"),
         EDITOR_PLACE_ENEMY("editor_place_enemy"),
+        EDITOR_PLACE_GOAL("editor_place_goal"),
         ACTION("action");
 
         public String name;

@@ -37,6 +37,11 @@ public class Goal extends Entity {
         this.lvl = lvl;
     }
     
+    public Goal(Vector2f position, Level lvl) {
+        this(position.x, position.y);
+        this.lvl = lvl;
+    }
+    
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
