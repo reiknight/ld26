@@ -19,17 +19,13 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class LevelEditor {
     private Level lvl;
-    private Enemy dummyEnemy;
+    private Enemy dummyEnemy = null;
     private State state;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
     private int enemyIdSelected = 0;
     private LevelManager lvlManager = null;
     private MessageManager msgManager = null;
-
-    private Vector2f Vector2f(int i, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     static enum State { 
         DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY 
@@ -68,7 +64,7 @@ public class LevelEditor {
     }
     
     public void update(GameContainer gc, int delta, CrossHair crosshair) {
-        lvl.update(gc, delta);    
+        //lvl.update(gc, delta);    
         hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
         msgManager.update(gc, delta); 
         
@@ -83,12 +79,18 @@ public class LevelEditor {
         if(state == State.PLACING_PLAYER) {
             lvl.setPlayerPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
                     hoverTilePosition[1] * lvl.getTileSize()));
+        } else if (state == State.PLACING_ENEMY) {
+            dummyEnemy.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                    hoverTilePosition[1] * lvl.getTileSize()));
         }
     }
     
     public void handleClick() {
         if(state != State.CREATING_NEW_LEVEL) {
             if(state == State.PLACING_PLAYER) {
+                msgManager.clearMsg();
+            } else if(state == State.PLACING_ENEMY) {
+                lvl.addEnemy(dummyEnemy);
                 msgManager.clearMsg();
             } else if(state == State.CHOOSING_TILE) {
                 tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
@@ -111,8 +113,12 @@ public class LevelEditor {
     }
     
     public void drawCursor(GameContainer gc, Graphics g) throws SlickException {
-        if (state != State.PLACING_PLAYER && state != State.PLACING_ENEMY) {
-            lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
+        if (state == State.PLACING_ENEMY) {
+            dummyEnemy.render(gc, g);
+        } else {
+            if (state != State.PLACING_PLAYER) {
+                lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
+            }
         }
     }
     
@@ -175,13 +181,13 @@ public class LevelEditor {
     
     public void placeEnemy() {
         if(state == State.DRAWING) {
-            enemyIdSelected = -1;
+            enemyIdSelected = 0;
         }
         
         if(state != State.CREATING_NEW_LEVEL) {
             state = State.PLACING_ENEMY;
-            dummyEnemy = EnemyFactory.createEnemy(enemyIdSelected, Vector2f(0,0), lvl);
-            enemyIdSelected++;
+            dummyEnemy = EnemyFactory.createEnemy(enemyIdSelected, new Vector2f(0,0), lvl);
+            enemyIdSelected = (enemyIdSelected + 1) % 2;
             msgManager.fix("Move enemy and click to set his position. Press E again to change enemy type.");
         }
     }

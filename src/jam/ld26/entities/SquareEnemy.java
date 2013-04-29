@@ -4,6 +4,7 @@
  */
 package jam.ld26.entities;
 
+import jam.ld26.game.C;
 import jam.ld26.levels.Level;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -64,6 +65,11 @@ public class SquareEnemy extends Enemy {
         //Actualizamos la posición
         x += movimiento*velX*delta;
         this.setPosition(new Vector2f(x,y));
+    }
+    
+    @Override
+    public int getType() {
+        return C.Enemies.SQUARE_ENEMY.id;
     }
 
 }

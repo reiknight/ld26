@@ -4,6 +4,7 @@
  */
 package jam.ld26.entities;
 
+import jam.ld26.game.C;
 import jam.ld26.levels.Level;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -31,6 +32,11 @@ public class LazyTriangleEnemy extends Enemy {
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
         tileSet.render(0, getX(), getY());
+    }
+
+    @Override
+    public int getType() {
+        return C.Enemies.LAZY_TRIANGLE_ENEMY.id;
     }
     
 }

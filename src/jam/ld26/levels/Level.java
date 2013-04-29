@@ -1,6 +1,8 @@
 package jam.ld26.levels;
 
 import infinitedog.frisky.textures.TextureManager;
+import jam.ld26.entities.Enemy;
+import jam.ld26.entities.EnemyFactory;
 import jam.ld26.entities.Player;
 import jam.ld26.game.C;
 import jam.ld26.tiles.TileSet;
@@ -12,10 +14,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,6 +33,7 @@ public class Level {
     private TileSet tileSet;
     private Vector2f playerPosition;
     private Player player;
+    private ArrayList<Enemy> enemies;
     
     public Level() {
         tileSize = 32;
@@ -42,6 +43,7 @@ public class Level {
         playerPosition = new Vector2f(0, 0);
         player = new Player();
         player.reset(this);
+        enemies = new ArrayList<Enemy>();
         map = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < (C.SCREEN_HEIGHT / tileSize); i += 1) {            
             map.add(new ArrayList<Integer>());
@@ -54,7 +56,6 @@ public class Level {
     public Level(String filePath, String name) {
         this.filePath = filePath;
         this.name = name;
-        player = new Player();
     }
     
     public void load() throws FileNotFoundException, ParseException {
@@ -91,7 +92,20 @@ public class Level {
         JSONObject playerObj = (JSONObject) obj.get("player");
         this.playerPosition = new Vector2f(Float.parseFloat(playerObj.get("posX").toString()),
                 Float.parseFloat(playerObj.get("posY").toString()));
+        player = new Player();
         player.reset(this);
+        
+        // Parse enemies
+        enemies = new ArrayList<Enemy>();
+        JSONArray jsonArrayEnemies = (JSONArray) obj.get("enemies"); 
+        if (jsonArrayEnemies != null) { 
+            for (int i = 0; i < jsonArrayEnemies.size(); i++){ 
+                JSONObject enemyObj = (JSONObject) jsonArrayEnemies.get(i);
+                enemies.add(EnemyFactory.createEnemy(Integer.parseInt(enemyObj.get("type").toString()),
+                        new Vector2f(Float.parseFloat(enemyObj.get("posX").toString()), Float.parseFloat(enemyObj.get("posY").toString())),
+                        this));
+            }
+        }
     }
     
     public void save() throws IOException {
@@ -99,6 +113,7 @@ public class Level {
         JSONObject tileSetObj = new JSONObject();
         JSONArray mapObj = new JSONArray();
         JSONObject playerObj = new JSONObject();
+        JSONArray enemiesObj = new JSONArray();
         
         obj.put("tileSize", tileSize);
         tileSetObj.put("name", tileSetName);
@@ -117,7 +132,16 @@ public class Level {
         playerObj.put("posX", playerPosition.x);
         playerObj.put("posY", playerPosition.y);
         obj.put("player", playerObj);
-                
+        
+        for (int i = 0; i < enemies.size(); i++) {
+            JSONObject enemyObj = new JSONObject();
+            enemyObj.put("type", enemies.get(i).getType());
+            enemyObj.put("posX", enemies.get(i).getX());
+            enemyObj.put("posY", enemies.get(i).getY());
+            enemiesObj.add(enemyObj);
+        }
+        obj.put("enemies", enemiesObj);        
+        
         backupFile();
         
         FileWriter fileWriter = null;
@@ -176,10 +200,18 @@ public class Level {
             }
         }
         player.render(gc, g);
+        
+        for (int i = 0; i < enemies.size(); i++) {
+            ((Enemy) enemies.get(i)).render(gc, g);
+        }
     }
 
     public void update(GameContainer gc, int delta) {
         player.update(gc, delta);
+        
+        for (int i = 0; i < enemies.size(); i++) {
+            ((Enemy) enemies.get(i)).update(gc, delta);
+        }
     }
     
     public int[] getTilePosition(Vector2f v) {
@@ -209,6 +241,10 @@ public class Level {
                 map.get(i).set(j, 0);
             }
         }
+    }
+    
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
     }
 
     private void backupFile() {

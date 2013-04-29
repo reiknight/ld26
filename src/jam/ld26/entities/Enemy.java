@@ -42,5 +42,11 @@ public abstract class Enemy extends Entity {
     public void setLvl(Level lvl) {
         this.lvl = lvl;
     }
+            
+    public TileSet getTileSet() {
+        return tileSet;
+    }      
+    
+    public abstract int getType();
     
 }
