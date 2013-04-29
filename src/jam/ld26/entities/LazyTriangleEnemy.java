@@ -31,7 +31,7 @@ public class LazyTriangleEnemy extends Enemy {
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
-        tileSet.render(0, getX(), getY());
+        tileSet.render(3, getX(), getY());
     }
 
     @Override

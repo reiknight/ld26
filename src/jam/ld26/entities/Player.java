@@ -95,7 +95,10 @@ public class Player extends Entity {
                     jumping = true;
                     velY = 0f;
                     try {
-                        lightOff(position[1],position[0]-1);
+                        f = lvl.getMap().get(position[1]).get(position[0]-movimiento);
+                        lightOff(position[1],position[0]-movimiento);
+                        lvl.getMap().get(position[1]).remove(position[0]-movimiento);
+                        lvl.getMap().get(position[1]).add(position[0]-movimiento,f%21);
                     } catch(IndexOutOfBoundsException e) { }
                 }
             }
