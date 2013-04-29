@@ -41,6 +41,8 @@ public class LevelEditorState extends ManagedGameState {
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         evm.addEvent(C.Events.EDITOR_PLACE_PLAYER.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_H, 
                 (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        evm.addEvent(C.Events.EDITOR_PLACE_ENEMY.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_E, 
+                (Integer) C.Logic.SELECT_OPTION_DELAY.data));
         
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
@@ -86,7 +88,7 @@ public class LevelEditorState extends ManagedGameState {
         } else if(evm.isHappening(C.Events.EDITOR_ERASE_LEVEL.name, gc)) {
             lvlEditor.eraseLevel();
         } else if(evm.isHappening(C.Events.EDITOR_TILE_SET_MENU.name, gc)) {
-            lvlEditor.toggleTileSetMenu();
+            lvlEditor.choseTile();
         } else if(evm.isHappening(C.Events.EDITOR_NEW_LEVEL.name, gc)) {
             lvlEditor.newLevel();
         } else if(evm.isHappening(C.Events.EDITOR_NEXT_LEVEL.name, gc)) {
@@ -95,6 +97,8 @@ public class LevelEditorState extends ManagedGameState {
             lvlEditor.prevLevel();
         } else if(evm.isHappening(C.Events.EDITOR_PLACE_PLAYER.name, gc)) {
             lvlEditor.placePlayer();
+        } else if(evm.isHappening(C.Events.EDITOR_PLACE_ENEMY.name, gc)) {
+            lvlEditor.placeEnemy();
         }
     }
 }

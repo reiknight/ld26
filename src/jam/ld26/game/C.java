@@ -28,7 +28,8 @@ public class C {
         EDITOR_NEW_LEVEL("editor_new_level"),
         EDITOR_NEXT_LEVEL("editor_next_level"),
         EDITOR_PREV_LEVEL("editor_prev_level"),
-        EDITOR_PLACE_PLAYER("editor_place_players"),
+        EDITOR_PLACE_PLAYER("editor_place_player"),
+        EDITOR_PLACE_ENEMY("editor_place_enemy"),
         ACTION("action");
 
         public String name;

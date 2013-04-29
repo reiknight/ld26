@@ -18,17 +18,19 @@ import org.newdawn.slick.geom.Vector2f;
 public class LevelEditor {
     private Level lvl;
     private Player player;
-    private boolean paused = false;
-    private boolean showTileSetMenu = false;
-    private boolean needNewLevelName = false;
-    private boolean placingPlayer = false;
+    private State state;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
     private LevelManager lvlManager = null;
     private MessageManager msgManager = null;
     
+    static enum State { 
+        DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY 
+    };
+    
     public LevelEditor() {
         msgManager = new MessageManager();
+        state = State.DRAWING;
         try {
             lvlManager = new LevelManager("resources/levels/editor");
         } catch (ParseException ex) {
@@ -45,7 +47,7 @@ public class LevelEditor {
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
-        if (this.showTileSetMenu) {
+        if (state == State.CHOOSING_TILE) {
             TileSet tileSet = lvl.getTileSet();
             for(int i = 0; i < tileSet.getRows(); i += 1) {
                 for(int j = 0; j < tileSet.getCols(); j += 1) {
@@ -66,36 +68,34 @@ public class LevelEditor {
         hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
         msgManager.update(gc, delta); 
         
-        if (needNewLevelName && msgManager.isInputFinished()) {
+        if (state == State.CREATING_NEW_LEVEL && msgManager.isInputFinished()) {
             lvl.setFilePath("resources/levels/editor");
             lvl.setName(msgManager.getUserInput());
             lvlManager.addLevel(lvl.getName());
             saveLevel();
-            needNewLevelName = false;
+            state = State.DRAWING;
             player.setPosition(lvl.getPlayerPosition());
         }
               
-        if(placingPlayer) {
+        if(state == State.PLACING_PLAYER) {
             player.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
                     hoverTilePosition[1] * lvl.getTileSize()));
         }
     }
     
     public void handleClick() {
-        if(placingPlayer) {
-            placingPlayer = false;
-            lvl.setPlayerPosition(new Vector2f(player.getX(), player.getY()));
-            msgManager.clearMsg();
-        } else {
-            if(!needNewLevelName) {
-                if(showTileSetMenu) {
-                    tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
-                    showTileSetMenu = false;
-                } else {
-                    lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
-                }
+        if(state != State.CREATING_NEW_LEVEL) {
+            if(state == State.PLACING_PLAYER) {
+                lvl.setPlayerPosition(new Vector2f(player.getX(), player.getY()));
+                msgManager.clearMsg();
+            } else if(state == State.CHOOSING_TILE) {
+                tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
+            } else { // Drawing
+                lvl.setTileIdAtPosition(hoverTilePosition, tileSetIdSelected);
             }
+            state = State.DRAWING;
         }
+        
     }
     
     public void drawGrid(GameContainer gc, Graphics g) throws SlickException {        
@@ -109,17 +109,8 @@ public class LevelEditor {
     }
     
     public void drawCursor(GameContainer gc, Graphics g) throws SlickException {
-        lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
-        g.setColor(new Color(255, 255, 0, 150));
-        if(!placingPlayer) {
-            g.fillRect(hoverTilePosition[0] * lvl.getTileSize(), hoverTilePosition[1] * lvl.getTileSize(),
-                lvl.getTileSize(), lvl.getTileSize());
-        }
-    }
-    
-    public void toggleTileSetMenu() {
-        if(!this.needNewLevelName) {
-            this.showTileSetMenu = !this.showTileSetMenu;
+        if (state != State.PLACING_PLAYER && state != State.PLACING_ENEMY) {
+            lvl.getTileSet().render(tileSetIdSelected, hoverTilePosition[0], hoverTilePosition[1]);
         }
     }
     
@@ -139,7 +130,7 @@ public class LevelEditor {
     }
     
     public void eraseLevel() {
-        if(!this.needNewLevelName) {
+        if(state != State.CREATING_NEW_LEVEL) {
             lvl.eraseLevel();
             msgManager.announce("Erased Map.");
         }
@@ -151,11 +142,11 @@ public class LevelEditor {
         }
         lvl = new Level();
         msgManager.input("Enter new level name:");
-        needNewLevelName = true;
+        state = State.CREATING_NEW_LEVEL;
     }
     
     public void nextLevel() {
-        if(!this.needNewLevelName) {
+        if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.nextLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded.");
             player.setPosition(lvl.getPlayerPosition());
@@ -163,17 +154,30 @@ public class LevelEditor {
     }
         
     public void prevLevel() {
-        if(!this.needNewLevelName) {
+        if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.prevLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded."); 
             player.setPosition(lvl.getPlayerPosition());
         }
     }
     
+    public void choseTile() {
+        if(state != State.CREATING_NEW_LEVEL) {
+            state = State.CHOOSING_TILE;
+        }
+    }
+    
     public void placePlayer() {
-        if(!this.needNewLevelName) {
-            placingPlayer = true;
+        if(state != State.CREATING_NEW_LEVEL) {
+            state = State.PLACING_PLAYER;
             msgManager.fix("Move player and click to set his position.");
+        }
+    }
+    
+    public void placeEnemy() {
+        if(state != State.CREATING_NEW_LEVEL) {
+            state = State.PLACING_ENEMY;
+            msgManager.fix("Move enemy and click to set his position. Press E again to change enemy type.");
         }
     }
 }
