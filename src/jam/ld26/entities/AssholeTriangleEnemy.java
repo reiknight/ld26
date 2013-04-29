@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Vector2f;
 class AssholeTriangleEnemy extends Enemy {
     private State state;
     private static int ANGRY_TILES = 4;
-    private double speed = .10;
+    private double speed = .08;
     
     static enum State { 
         IDLE("idle", 1), 
@@ -45,10 +45,10 @@ class AssholeTriangleEnemy extends Enemy {
         Vector2f newPosition = new Vector2f(getX(), getY());
         Player player = lvl.getPlayer();
         PhysicsManager pm = PhysicsManager.getInstance();
-        int distanceInTiles = (int) (pm.distance(this, player, lvl.getTileSize()) / lvl.getTileSize());
+        int distanceInTiles = (int) ((player.getX() - getX()) / lvl.getTileSize());
         
         if (state == State.ANGRY) {
-            if (Math.abs(distanceInTiles) > ANGRY_TILES) {
+            if (Math.abs(distanceInTiles) > ANGRY_TILES || Math.abs(getY()-player.getY()) > lvl.getTileSize()) {
                 state = State.IDLE;
             } else {
                 if (distanceInTiles > 0) {
@@ -59,7 +59,7 @@ class AssholeTriangleEnemy extends Enemy {
                 this.setPosition(newPosition);
             }
         } else {
-            if (Math.abs(distanceInTiles) <= ANGRY_TILES) {
+            if (Math.abs(distanceInTiles) <= ANGRY_TILES && Math.abs(getY()-player.getY()) < lvl.getTileSize()) {
                 state = State.ANGRY;
             }
         }
