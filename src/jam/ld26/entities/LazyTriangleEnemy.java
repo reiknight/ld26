@@ -7,6 +7,7 @@ package jam.ld26.entities;
 import jam.ld26.levels.Level;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
 
 /**
  *
@@ -20,6 +21,10 @@ public class LazyTriangleEnemy extends Enemy {
     
     public LazyTriangleEnemy(float x, float y, Level lvl) {
         super(x,y,lvl);
+    }
+    
+    public LazyTriangleEnemy(Vector2f position, Level lvl) {
+        super(position.x, position.y, lvl);
     }
      
     @Override

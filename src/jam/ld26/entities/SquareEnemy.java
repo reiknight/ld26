@@ -23,6 +23,10 @@ public class SquareEnemy extends Enemy {
         super(x, y, lvl);
     }
     
+    public SquareEnemy(Vector2f position, Level lvl) {
+        super(position.x, position.y, lvl);
+    }
+    
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);

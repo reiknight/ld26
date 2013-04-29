@@ -82,6 +82,18 @@ public class C {
             this.name = name;
         }
     }
+    
+    public static enum Enemies {
+        SQUARE_ENEMY(0),
+        LAZY_TRIANGLE_ENEMY(1),
+        ASSHOLE_TRIANGLE_ENEMY(2);
+        
+        public Integer id;
+        
+        private Enemies(Integer id) {
+            this.id = id;
+        }
+    }
 
     public static enum Groups {
         PLAYER("player"),
