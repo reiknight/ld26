@@ -46,6 +46,8 @@ public class MainState extends ManagedGameState {
         sm.addSound(C.Sounds.ENCENDIDO.name, C.Sounds.ENCENDIDO.path);
         sm.addSound(C.Sounds.JUMP.name, C.Sounds.JUMP.path);
         sm.addSound(C.Sounds.MUERTE.name, C.Sounds.MUERTE.path);
+        sm.addSound(C.Sounds.AVISTADO.name, C.Sounds.AVISTADO.path);
+        sm.addSound(C.Sounds.PORTAL.name, C.Sounds.PORTAL.path);
         
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
                 

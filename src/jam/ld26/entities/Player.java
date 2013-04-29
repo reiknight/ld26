@@ -289,6 +289,7 @@ public class Player extends Entity {
     public boolean won() {
         Goal goal = lvl.getGoal();
         if(goal != null && goal.hitPlayer(this)) {
+            sm.playSound(C.Sounds.PORTAL.name);
             return true;
         }
         return false;

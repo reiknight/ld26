@@ -120,6 +120,8 @@ public class C {
         JUMP("jump", "resources/sounds/jump.wav"),
         ENCENDIDO("encendido", "resources/sounds/encendido.wav"),
         MUERTE("muerte", "resources/sounds/muerte.wav"),
+        PORTAL("portal", "resources/sounds/portal.wav"),
+        AVISTADO("muerte", "resources/sounds/avistado.wav"),
         MUSIC("music", "resources/music.ogg");
 
         public String name;

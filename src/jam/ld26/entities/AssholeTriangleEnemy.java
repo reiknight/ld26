@@ -1,6 +1,7 @@
 package jam.ld26.entities;
 
 import infinitedog.frisky.physics.PhysicsManager;
+import infinitedog.frisky.sounds.SoundManager;
 import jam.ld26.game.C;
 import jam.ld26.levels.Level;
 import org.newdawn.slick.GameContainer;
@@ -60,6 +61,7 @@ class AssholeTriangleEnemy extends Enemy {
             }
         } else {
             if (Math.abs(distanceInTiles) <= ANGRY_TILES && Math.abs(getY()-player.getY()) < lvl.getTileSize()) {
+                SoundManager.getInstance().playSound(C.Sounds.AVISTADO.name);
                 state = State.ANGRY;
             }
         }
