@@ -159,6 +159,7 @@ public class Player extends Entity {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy e = (Enemy) enemies.get(i);
                 if(e.hitPlayer(this)) {
+                    
                     try {
                         int[] position2 = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y+getHeight()-5));
                         int f = lvl.getMap().get(position2[1]).get(position2[0]);
@@ -168,6 +169,7 @@ public class Player extends Entity {
                     } catch(IndexOutOfBoundsException ioobe) { }
                     x = lvl.getPlayerPosition().x;
                     y = lvl.getPlayerPosition().y;
+                    lvl.reset();
                     movimiento = 0;
                     velY = 0;
                     jumping = false;
