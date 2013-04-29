@@ -10,6 +10,8 @@ public class C {
 
     public static enum Events {
         CLOSE_WINDOW("close_window"),
+        SOUND_OFF("sound_off"),
+        PAUSED("pause"),
         MOVE_LEFT("move_left"),
         MOVE_RIGHT("move_right"),
         MOVE_UP("move_up"),
@@ -121,8 +123,8 @@ public class C {
         ENCENDIDO("encendido", "resources/sounds/encendido.wav"),
         MUERTE("muerte", "resources/sounds/muerte.wav"),
         PORTAL("portal", "resources/sounds/portal.wav"),
-        AVISTADO("muerte", "resources/sounds/avistado.wav"),
-        MUSIC("music", "resources/music.ogg");
+        AVISTADO("avistado", "resources/sounds/avistado.wav"),
+        MUSIC("music", "resources/music/music.wav");
 
         public String name;
         public String path;

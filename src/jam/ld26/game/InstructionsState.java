@@ -48,6 +48,8 @@ public class InstructionsState extends ManagedGameState {
         
         g.drawString("Arrow Keys: Movement", 100, 215);
         g.drawString("Space: Jump", 100, 230);
+        g.drawString("P: Pause", 100, 245);
+        g.drawString("M: Music Off (Not Sound Effects)", 100, 260);
         
         em.render(container, g);
     }
