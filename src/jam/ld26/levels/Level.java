@@ -24,6 +24,7 @@ import org.json.simple.parser.ParseException;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class Level {
     private String name;
@@ -62,10 +63,12 @@ public class Level {
         this.name = name;
     }
     
-    public void load() throws FileNotFoundException, ParseException {
+    public void load() throws FileNotFoundException, ParseException, IOException {
         JSONParser parser = new JSONParser();
+        //JSONObject obj = (JSONObject) parser.parse(new Scanner(
+        //        new File(filePath + "/" + name + ".json")).useDelimiter("\\Z").next());
         JSONObject obj = (JSONObject) parser.parse(new Scanner(
-                new File(filePath + "/" + name + ".json")).useDelimiter("\\Z").next());
+                ResourceLoader.getResource(filePath + "/" + name + ".json").openStream()).useDelimiter("\\Z").next());
         
         // Parse tileSize
         tileSize = Integer.parseInt(obj.get("tileSize").toString());

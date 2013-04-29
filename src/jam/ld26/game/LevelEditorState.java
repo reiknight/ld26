@@ -4,6 +4,9 @@ import infinitedog.frisky.events.InputEvent;
 import infinitedog.frisky.game.ManagedGameState;
 import jam.ld26.entities.CrossHair;
 import jam.ld26.levels.LevelEditor;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -56,9 +59,12 @@ public class LevelEditorState extends ManagedGameState {
         //Crosshair movement
         evm.addEvent(C.Events.CROSSHAIR_MOVED.name, new InputEvent(InputEvent.MOUSE_MOVE, 
                 new Rectangle(0, 0, C.SCREEN_WIDTH, C.SCREEN_HEIGHT)));
-        
-        //Create level editor
-        lvlEditor = new LevelEditor();
+        try {
+            //Create level editor
+            lvlEditor = new LevelEditor();
+        } catch (IOException ex) {
+            Logger.getLogger(LevelEditorState.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         //Add Crosshair
         crosshair = new CrossHair();
@@ -86,7 +92,11 @@ public class LevelEditorState extends ManagedGameState {
         } else if(evm.isHappening(C.Events.CLICK_LEFT_EDITOR.name, gc)) {
             lvlEditor.handleClick();
         } else if(evm.isHappening(C.Events.LOAD_LEVEL.name, gc)) {
-            lvlEditor.loadLevel();
+            try {
+                lvlEditor.loadLevel();
+            } catch (IOException ex) {
+                Logger.getLogger(LevelEditorState.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if(evm.isHappening(C.Events.SAVE_LEVEL.name, gc)) {
             lvlEditor.saveLevel();
         } else if(evm.isHappening(C.Events.EDITOR_ERASE_LEVEL.name, gc)) {
@@ -96,9 +106,17 @@ public class LevelEditorState extends ManagedGameState {
         } else if(evm.isHappening(C.Events.EDITOR_NEW_LEVEL.name, gc)) {
             lvlEditor.newLevel();
         } else if(evm.isHappening(C.Events.EDITOR_NEXT_LEVEL.name, gc)) {
-            lvlEditor.nextLevel();
+            try {
+                lvlEditor.nextLevel();
+            } catch (IOException ex) {
+                Logger.getLogger(LevelEditorState.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if(evm.isHappening(C.Events.EDITOR_PREV_LEVEL.name, gc)) {
-            lvlEditor.prevLevel();
+            try {
+                lvlEditor.prevLevel();
+            } catch (IOException ex) {
+                Logger.getLogger(LevelEditorState.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else if(evm.isHappening(C.Events.EDITOR_PLACE_PLAYER.name, gc)) {
             lvlEditor.placePlayer();
         } else if(evm.isHappening(C.Events.EDITOR_PLACE_ENEMY.name, gc)) {

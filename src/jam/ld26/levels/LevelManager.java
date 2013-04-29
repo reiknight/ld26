@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class LevelManager {
     String fileName;
@@ -19,9 +20,11 @@ public class LevelManager {
     ArrayList<String> levelNames = null;
     private int currentLevelId = -1;
     
-    public LevelManager(String filePath) throws ParseException, FileNotFoundException {
+    public LevelManager(String filePath) throws ParseException, FileNotFoundException, IOException {
         JSONParser parser = new JSONParser();
-        JSONObject obj = (JSONObject) parser.parse(new Scanner(new File(filePath + "/list.json")).useDelimiter("\\Z").next());
+
+        JSONObject obj = (JSONObject) parser.parse(new Scanner(ResourceLoader.getResource(filePath + "/list.json").openStream()).useDelimiter("\\Z").next());
+        //JSONObject obj = (JSONObject) parser.parse(new Scanner(new File(filePath + "/list.json")).useDelimiter("\\Z").next());
         JSONArray levelsObj = (JSONArray) obj.get("levels");
         
         levelNames = new ArrayList<String>();
@@ -32,7 +35,7 @@ public class LevelManager {
         this.filePath = filePath;
     }
     
-    public Level nextLevel() {
+    public Level nextLevel() throws IOException {
         if(levelNames.isEmpty()) {
             return null;
         }
@@ -40,7 +43,7 @@ public class LevelManager {
         return loadLevel();
     }
     
-    public Level prevLevel() {
+    public Level prevLevel() throws IOException {
         if(levelNames.isEmpty()) {
             return null;
         }
@@ -72,7 +75,7 @@ public class LevelManager {
         }
     }
     
-    public Level loadLevel() {
+    public Level loadLevel() throws IOException {
         Level lvl = new Level(this.filePath, levelNames.get(currentLevelId));
         
         try {

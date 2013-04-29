@@ -5,3 +5,4 @@ nbproject
 /dist/
 /lib/lwjgl-2.9.0
 *.save
+store

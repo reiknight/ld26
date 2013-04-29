@@ -7,6 +7,7 @@ import jam.ld26.levels.Level;
 import jam.ld26.levels.LevelEditor;
 import jam.ld26.levels.LevelManager;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 import org.json.simple.parser.ParseException;
 import org.newdawn.slick.GameContainer;
@@ -58,8 +59,14 @@ public class MainState extends ManagedGameState {
             Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(LevelEditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        lvl = lvlManager.nextLevel();
+        try {
+            lvl = lvlManager.nextLevel();
+        } catch (IOException ex) {
+            Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
         restart();
     }
     
@@ -88,9 +95,12 @@ public class MainState extends ManagedGameState {
             }
             Player p = lvl.getPlayer();
             if(p.won()) {
-                lvl = lvlManager.nextLevel();
+                try {
+                    lvl = lvlManager.nextLevel();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
             }
-
         }
                 
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {

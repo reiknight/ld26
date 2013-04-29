@@ -31,7 +31,7 @@ public class LevelEditor {
         DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY, PLACING_GOAL, RUNNING
     };
     
-    public LevelEditor() {
+    public LevelEditor() throws IOException {
         msgManager = new MessageManager();
         state = State.DRAWING;
         try {
@@ -134,7 +134,7 @@ public class LevelEditor {
         }
     }
     
-    public void loadLevel() {
+    public void loadLevel() throws IOException {
         lvl = lvlManager.loadLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
     }
@@ -164,14 +164,14 @@ public class LevelEditor {
         state = State.CREATING_NEW_LEVEL;
     }
     
-    public void nextLevel() {
+    public void nextLevel() throws IOException {
         if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.nextLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded.");
         }
     }
         
-    public void prevLevel() {
+    public void prevLevel() throws IOException {
         if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.prevLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded."); 
