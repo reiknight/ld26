@@ -58,8 +58,8 @@ public class MainState extends ManagedGameState {
         em.addEntity(player.getName(), player);
         Enemy lt = new SquareEnemy(300, 256, lvl);
         Enemy lt2 = new LazyTriangleEnemy(300, 256, lvl);
-        em.addEntity(lt.getName(), lt);
-        em.addEntity(lt2.getName(), lt2);
+//        em.addEntity(lt.getName(), lt);
+//        em.addEntity(lt2.getName(), lt2);
         Goal goal = new Goal(300, 256);
         em.addEntity(goal.getName(), goal);
         

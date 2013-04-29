@@ -13,6 +13,7 @@ import jam.ld26.game.C;
 import jam.ld26.levels.Level;
 import jam.ld26.tiles.TileSet;
 import java.util.ArrayList;
+import java.util.Random;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Vector2f;
@@ -32,6 +33,8 @@ public class Player extends Entity {
     private byte movimiento = 0;
     
     private Level lvl;
+    
+    private Random rand = new Random();
     
     private EntityManager em = EntityManager.getInstance();
     private PhysicsManager pm = PhysicsManager.getInstance();
@@ -75,7 +78,14 @@ public class Player extends Entity {
         //Comprobamos si esta cayendo
         int[] position = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y+getHeight()-5));
         try {
-            if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
+            int f = lvl.getMap().get(position[1]).get(position[0]);
+            if(f != 0) {
+                if(jumping && f < 21) {    
+                    int color = rand.nextInt(3)+1;
+                    lightFrom(position[1],position[0], color);
+                    lvl.getMap().get(position[1]).remove(position[0]);
+                    lvl.getMap().get(position[1]).add(position[0],f+21*color);
+                }
                 jumping = false;
             } else {
                 if(!jumping) {
@@ -156,6 +166,7 @@ public class Player extends Entity {
             if(!jumping) {
                 jumping = true;
                 velY = -.08f;
+                
             }
         }
         if(jumping) {
@@ -178,6 +189,68 @@ public class Player extends Entity {
                 movimiento = 1;
             } else {
                 movimiento = 0;
+            }
+        }
+    }
+    
+    public void lightFrom(int x, int y, int color) {
+        int posAnterior = lvl.getMap().get(x).get(y);
+        for(int i = y+1; i < lvl.getMap().get(x).size(); i++) {
+            int pos = lvl.getMap().get(x).get(i);
+            if(pos != 0) {
+                if((posAnterior == 1 || posAnterior == 2 || posAnterior == 4 || posAnterior == 5 || posAnterior == 12 || posAnterior == 13) && (pos == posAnterior+1 || posAnterior == pos)) { 
+                    int f = lvl.getMap().get(x).get(i);
+                    lvl.getMap().get(x).remove(i);
+                    lvl.getMap().get(x).add(i,f+21*color);
+                    posAnterior = pos;
+                }
+            } else {
+                break;
+            }
+        }
+        posAnterior = lvl.getMap().get(x).get(y);
+        for(int i = y-1; i >0; i--) {
+            int pos = lvl.getMap().get(x).get(i);
+            if(lvl.getMap().get(x).get(i) != 0) {
+                if((posAnterior == 2 || posAnterior == 3 || posAnterior == 5 || posAnterior == 6 || posAnterior == 13 || posAnterior == 14) && (pos == posAnterior-1 || posAnterior == pos)) { 
+                    int f = lvl.getMap().get(x).get(i);
+                    lvl.getMap().get(x).remove(i);
+                    lvl.getMap().get(x).add(i,f+21*color);
+                    posAnterior = pos;
+                }
+            } else {
+                break;
+            }
+        }
+    }
+    
+    public void lightOff(int x, int y, int color) {
+        int posAnterior = lvl.getMap().get(x).get(y)%21;
+        for(int i = y+1; i < lvl.getMap().get(x).size(); i++) {
+            int pos = lvl.getMap().get(x).get(i)%21;
+            if(pos != 0) {
+                if((posAnterior == 1 || posAnterior == 2 || posAnterior == 4 || posAnterior == 5 || posAnterior == 12 || posAnterior == 13) && (pos == posAnterior+1 || posAnterior == pos)) { 
+                    int f = lvl.getMap().get(x).get(i);
+                    lvl.getMap().get(x).remove(i);
+                    lvl.getMap().get(x).add(i,f%21);
+                    posAnterior = pos;
+                }
+            } else {
+                break;
+            }
+        }
+        posAnterior = lvl.getMap().get(x).get(y)%21;
+        for(int i = y-1; i >0; i--) {
+            int pos = lvl.getMap().get(x).get(i)%21;
+            if(lvl.getMap().get(x).get(i) != 0) {
+                if((posAnterior == 2 || posAnterior == 3 || posAnterior == 5 || posAnterior == 6 || posAnterior == 13 || posAnterior == 14) && (pos == posAnterior-1 || posAnterior == pos)) { 
+                    int f = lvl.getMap().get(x).get(i);
+                    lvl.getMap().get(x).remove(i);
+                    lvl.getMap().get(x).add(i,f%21);
+                    posAnterior = pos;
+                }
+            } else {
+                break;
             }
         }
     }
