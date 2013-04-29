@@ -25,6 +25,7 @@ public class CreditsState extends ManagedGameState {
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
         em.setGameState(C.States.CREDITS_STATE.name);
         evm.addEvent(C.Events.BACK.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_SPACE, (Integer) C.Logic.SELECT_OPTION_DELAY.data));
+        tm.addTexture(C.Textures.LOGO.name, C.Textures.LOGO.path);
         evm.addEvent(C.Events.CLOSE_WINDOW.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_ESCAPE));
         
         //TODO
@@ -35,14 +36,13 @@ public class CreditsState extends ManagedGameState {
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         em.setGameState(C.States.CREDITS_STATE.name);
         g.setColor(Color.white);
+        tm.getTexture(C.Textures.LOGO.name).draw(200, 0);
         g.drawString("press <SPACE> to back", 530, 50);
-        g.drawString("programmed by", 600, 350);
-        g.drawString("@ReikVal", 600, 370);
-        g.drawString("@ultrayoshi", 600, 390);
-        g.drawString("art by", 600, 430);
-        g.drawString("@_Dreisa_", 600, 450);
-        g.drawString("special thanks", 600, 490);
-        g.drawString("Our dog Zeus", 600, 510);
+        g.drawString("programmed by", 350, 400);
+        g.drawString("@ReikVal", 350, 420);
+        g.drawString("@ultrayoshi", 350, 440);
+        g.drawString("art by", 350, 470);
+        g.drawString("@Soraya_Alb", 350, 490);
         em.render(container, g);
     }
 
