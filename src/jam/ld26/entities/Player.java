@@ -26,7 +26,7 @@ public class Player extends Entity {
     //Characteristics.
     private float velX = .15f;
     private float velY = 0;
-    private int frame = 36;
+    private int frame = 4;
     private float g = .0001f;
     
     private boolean jumping = false;
@@ -40,7 +40,7 @@ public class Player extends Entity {
     private EventManager evm = EventManager.getInstance();
     private SoundManager sm = SoundManager.getInstance();
     
-    private TileSet tileSet = new TileSet(C.Textures.TILE_SET.name, 
+    private TileSet tileSet = new TileSet(C.Textures.ENEMIES_TILE_SET.name, 
             (Integer) C.Logic.TILE_SIZE.data);
     
     public Player() {
@@ -58,6 +58,17 @@ public class Player extends Entity {
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
+        switch(movimiento) {
+            case 0:
+                frame = 4;
+                break;
+            case 1:
+                frame = 5;
+                break;
+            case -1:
+                frame = 6;
+                break;
+        }
         tileSet.render(frame, getX(), getY());
     }
     
@@ -148,6 +159,13 @@ public class Player extends Entity {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy e = (Enemy) enemies.get(i);
                 if(e.hitPlayer(this)) {
+                    try {
+                        int[] position2 = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y+getHeight()-5));
+                        int f = lvl.getMap().get(position2[1]).get(position2[0]);
+                        lightOff(position2[1],position2[0]);
+                        lvl.getMap().get(position2[1]).remove(position2[0]);
+                        lvl.getMap().get(position2[1]).add(position2[0],f%21);
+                    } catch(IndexOutOfBoundsException ioobe) { }
                     x = lvl.getPlayerPosition().x;
                     y = lvl.getPlayerPosition().y;
                     movimiento = 0;
