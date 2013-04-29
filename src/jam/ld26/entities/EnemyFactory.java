@@ -11,11 +11,10 @@ public class EnemyFactory {
         
         if(id == Enemies.SQUARE_ENEMY.id) {
             enemy = new SquareEnemy(position, lvl);
-        } else if(id == Enemies.LAZY_TRIANGLE_ENEMY.id) {
-            enemy = new LazyTriangleEnemy(position, lvl);
+        } else if(id == Enemies.LAZY_CIRCLE_ENEMY.id) {
+            enemy = new LazyCircleEnemy(position, lvl);
         } else if(id == Enemies.ASSHOLE_TRIANGLE_ENEMY.id) {
-            //TODO: AssholeTrinagle!
-            //enemy = new AssholeTriangleEnemy(position, lvl);
+            enemy = new AssholeTriangleEnemy(position, lvl);
         }
         
         return enemy;

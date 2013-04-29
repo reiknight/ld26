@@ -4,7 +4,7 @@ import infinitedog.frisky.events.InputEvent;
 import infinitedog.frisky.game.ManagedGameState;
 import jam.ld26.entities.Enemy;
 import jam.ld26.entities.Goal;
-import jam.ld26.entities.LazyTriangleEnemy;
+import jam.ld26.entities.LazyCircleEnemy;
 import jam.ld26.entities.Player;
 import jam.ld26.entities.SquareEnemy;
 import jam.ld26.levels.Level;

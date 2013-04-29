@@ -86,7 +86,7 @@ public class C {
     
     public static enum Enemies {
         SQUARE_ENEMY(0),
-        LAZY_TRIANGLE_ENEMY(1),
+        LAZY_CIRCLE_ENEMY(1),
         ASSHOLE_TRIANGLE_ENEMY(2);
         
         public Integer id;

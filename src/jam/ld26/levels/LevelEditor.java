@@ -192,7 +192,7 @@ public class LevelEditor {
         if(state != State.CREATING_NEW_LEVEL) {
             state = State.PLACING_ENEMY;
             dummyEnemy = EnemyFactory.createEnemy(enemyIdSelected, new Vector2f(0,0), lvl);
-            enemyIdSelected = (enemyIdSelected + 1) % 2;
+            enemyIdSelected = (enemyIdSelected + 1) % C.Enemies.values().length;
             msgManager.fix("Move enemy and click to set his position. Press E again to change enemy type.");
         }
     }

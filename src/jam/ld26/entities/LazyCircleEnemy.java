@@ -14,17 +14,17 @@ import org.newdawn.slick.geom.Vector2f;
  *
  * @author Reik Val
  */
-public class LazyTriangleEnemy extends Enemy {
+public class LazyCircleEnemy extends Enemy {
     
-    public LazyTriangleEnemy(float x, float y) {
+    public LazyCircleEnemy(float x, float y) {
         super(x,y);
     }
     
-    public LazyTriangleEnemy(float x, float y, Level lvl) {
+    public LazyCircleEnemy(float x, float y, Level lvl) {
         super(x,y,lvl);
     }
     
-    public LazyTriangleEnemy(Vector2f position, Level lvl) {
+    public LazyCircleEnemy(Vector2f position, Level lvl) {
         super(position.x, position.y, lvl);
     }
      
@@ -36,7 +36,7 @@ public class LazyTriangleEnemy extends Enemy {
 
     @Override
     public int getType() {
-        return C.Enemies.LAZY_TRIANGLE_ENEMY.id;
+        return C.Enemies.LAZY_CIRCLE_ENEMY.id;
     }
     
 }
