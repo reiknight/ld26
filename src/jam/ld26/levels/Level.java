@@ -329,4 +329,11 @@ public class Level {
             e.printStackTrace();
         }
     }
+    
+    void reset () {
+        player.reset(this);
+        for (int i = 0; i < enemies.size(); i++) {
+            ((Enemy) enemies.get(i)).reset(this);
+        }
+    }
 }

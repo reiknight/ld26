@@ -28,7 +28,7 @@ public class LevelEditor {
     private MessageManager msgManager = null;
     
     static enum State { 
-        DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY, PLACING_GOAL
+        DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY, PLACING_GOAL, RUNNING
     };
     
     public LevelEditor() {
@@ -48,43 +48,50 @@ public class LevelEditor {
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
-        if (state == State.CHOOSING_TILE) {
-            TileSet tileSet = lvl.getTileSet();
-            for(int i = 0; i < tileSet.getRows(); i += 1) {
-                for(int j = 0; j < tileSet.getCols(); j += 1) {
-                    tileSet.render(i * tileSet.getCols() + j, j, i);       
+        if (state == State.RUNNING) {
+            lvl.render(gc, g);
+        } else {
+            if (state == State.CHOOSING_TILE) {
+                TileSet tileSet = lvl.getTileSet();
+                for(int i = 0; i < tileSet.getRows(); i += 1) {
+                    for(int j = 0; j < tileSet.getCols(); j += 1) {
+                        tileSet.render(i * tileSet.getCols() + j, j, i);       
+                    }
                 }
+            } else if (state != State.CREATING_NEW_LEVEL) {
+                lvl.render(gc, g);      
+                drawCursor(gc, g);
+                drawGrid(gc, g);
             }
-        } else if (state != State.CREATING_NEW_LEVEL) {
-            lvl.render(gc, g);      
-            drawCursor(gc, g);
-            drawGrid(gc, g);
+            msgManager.render(gc, g);
         }
-        msgManager.render(gc, g);
     }
     
     public void update(GameContainer gc, int delta, CrossHair crosshair) {
-        //lvl.update(gc, delta);    
-        hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
-        msgManager.update(gc, delta); 
-        
-        if (state == State.CREATING_NEW_LEVEL && msgManager.isInputFinished()) {
-            lvl.setFilePath("resources/levels/editor");
-            lvl.setName(msgManager.getUserInput());
-            lvlManager.addLevel(lvl.getName());
-            saveLevel();
-            state = State.DRAWING;
-        }
-              
-        if(state == State.PLACING_PLAYER) {
-            lvl.setPlayerPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
-                    hoverTilePosition[1] * lvl.getTileSize()));
-        } else if (state == State.PLACING_GOAL) {
-            lvl.setGoalPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
-                    hoverTilePosition[1] * lvl.getTileSize()));
-        } else if (state == State.PLACING_ENEMY) {
-            dummyEnemy.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
-                    hoverTilePosition[1] * lvl.getTileSize()));
+        if (state == State.RUNNING) {
+            lvl.update(gc, delta);    
+        } else {
+            hoverTilePosition = lvl.getTilePosition(crosshair.getCenter());
+            msgManager.update(gc, delta); 
+
+            if (state == State.CREATING_NEW_LEVEL && msgManager.isInputFinished()) {
+                lvl.setFilePath("resources/levels/editor");
+                lvl.setName(msgManager.getUserInput());
+                lvlManager.addLevel(lvl.getName());
+                saveLevel();
+                state = State.DRAWING;
+            }
+
+            if(state == State.PLACING_PLAYER) {
+                lvl.setPlayerPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                        hoverTilePosition[1] * lvl.getTileSize()));
+            } else if (state == State.PLACING_GOAL) {
+                lvl.setGoalPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                        hoverTilePosition[1] * lvl.getTileSize()));
+            } else if (state == State.PLACING_ENEMY) {
+                dummyEnemy.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+                        hoverTilePosition[1] * lvl.getTileSize()));
+            }
         }
     }
     
@@ -201,6 +208,15 @@ public class LevelEditor {
         if(state != State.CREATING_NEW_LEVEL) {
             state = State.PLACING_GOAL;
             msgManager.fix("Move goal and click to set its position.");
+        }
+    }
+    
+    public void toggleRun() {
+        if (this.state == State.RUNNING) {
+            this.state = State.DRAWING;
+            lvl.reset();
+        } else {
+            this.state = State.RUNNING;
         }
     }
 }

@@ -18,6 +18,7 @@ public abstract class Enemy extends Entity {
     
     private static int number = 0;
     protected Level lvl;
+    private Vector2f initialPosition;
     
     protected TileSet tileSet = new TileSet(C.Textures.ENEMIES_TILE_SET.name, 
             (Integer) C.Logic.TILE_SIZE.data);
@@ -33,6 +34,7 @@ public abstract class Enemy extends Entity {
     public Enemy(float x, float y, Level lvl) {
         this(x, y);
         this.lvl = lvl;
+        this.initialPosition = new Vector2f(x, y);
     }
     
     public boolean hitPlayer(Player p) {
@@ -46,6 +48,10 @@ public abstract class Enemy extends Entity {
     public TileSet getTileSet() {
         return tileSet;
     }      
+    
+    public void reset(Level lvl) {
+        setPosition(initialPosition);
+    }
     
     public abstract int getType();
     
