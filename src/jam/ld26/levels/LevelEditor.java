@@ -1,6 +1,8 @@
 package jam.ld26.levels;
 
 import jam.ld26.entities.CrossHair;
+import jam.ld26.entities.Enemy;
+import jam.ld26.entities.EnemyFactory;
 import jam.ld26.entities.Player;
 import jam.ld26.game.C;
 import jam.ld26.game.LevelEditorState;
@@ -17,12 +19,17 @@ import org.newdawn.slick.geom.Vector2f;
 
 public class LevelEditor {
     private Level lvl;
-    private Player player;
+    private Enemy dummyEnemy;
     private State state;
     private int[] hoverTilePosition = {0,0};
     private int tileSetIdSelected = 0;
+    private int enemyIdSelected = 0;
     private LevelManager lvlManager = null;
     private MessageManager msgManager = null;
+
+    private Vector2f Vector2f(int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     static enum State { 
         DRAWING, CHOOSING_TILE, CREATING_NEW_LEVEL, PLACING_PLAYER, PLACING_ENEMY 
@@ -42,8 +49,6 @@ public class LevelEditor {
         if (lvl == null) {
             newLevel();
         }
-        player = new Player(lvl);
-        player.setPosition(lvl.getPlayerPosition());
     }
     
     public void render(GameContainer gc, Graphics g) throws SlickException {
@@ -55,8 +60,7 @@ public class LevelEditor {
                 }
             }
         } else {
-            lvl.render(gc, g);
-            player.render(gc, g);        
+            lvl.render(gc, g);      
             drawCursor(gc, g);
             msgManager.render(gc, g);
         }
@@ -74,11 +78,10 @@ public class LevelEditor {
             lvlManager.addLevel(lvl.getName());
             saveLevel();
             state = State.DRAWING;
-            player.setPosition(lvl.getPlayerPosition());
         }
               
         if(state == State.PLACING_PLAYER) {
-            player.setPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
+            lvl.setPlayerPosition(new Vector2f(hoverTilePosition[0] * lvl.getTileSize(), 
                     hoverTilePosition[1] * lvl.getTileSize()));
         }
     }
@@ -86,7 +89,6 @@ public class LevelEditor {
     public void handleClick() {
         if(state != State.CREATING_NEW_LEVEL) {
             if(state == State.PLACING_PLAYER) {
-                lvl.setPlayerPosition(new Vector2f(player.getX(), player.getY()));
                 msgManager.clearMsg();
             } else if(state == State.CHOOSING_TILE) {
                 tileSetIdSelected = hoverTilePosition[0] + hoverTilePosition[1] * lvl.getTileSet().getCols();
@@ -117,7 +119,6 @@ public class LevelEditor {
     public void loadLevel() {
         lvl = lvlManager.loadLevel();
         msgManager.announce("Map '" + lvl.getName() + "' loaded.");
-        player.setPosition(lvl.getPlayerPosition());
     }
     
     public void saveLevel() {
@@ -149,7 +150,6 @@ public class LevelEditor {
         if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.nextLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded.");
-            player.setPosition(lvl.getPlayerPosition());
         }
     }
         
@@ -157,7 +157,6 @@ public class LevelEditor {
         if(state != State.CREATING_NEW_LEVEL) {
             lvl = lvlManager.prevLevel();
             msgManager.announce("Map '" + lvl.getName() + "' loaded."); 
-            player.setPosition(lvl.getPlayerPosition());
         }
     }
     
@@ -175,8 +174,14 @@ public class LevelEditor {
     }
     
     public void placeEnemy() {
+        if(state == State.DRAWING) {
+            enemyIdSelected = -1;
+        }
+        
         if(state != State.CREATING_NEW_LEVEL) {
             state = State.PLACING_ENEMY;
+            dummyEnemy = EnemyFactory.createEnemy(enemyIdSelected, Vector2f(0,0), lvl);
+            enemyIdSelected++;
             msgManager.fix("Move enemy and click to set his position. Press E again to change enemy type.");
         }
     }

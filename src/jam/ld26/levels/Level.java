@@ -1,6 +1,7 @@
 package jam.ld26.levels;
 
 import infinitedog.frisky.textures.TextureManager;
+import jam.ld26.entities.Player;
 import jam.ld26.game.C;
 import jam.ld26.tiles.TileSet;
 import java.io.File;
@@ -31,6 +32,7 @@ public class Level {
     private String tileSetName, tileSetFileName;
     private TileSet tileSet;
     private Vector2f playerPosition;
+    private Player player;
     
     public Level() {
         tileSize = 32;
@@ -38,6 +40,8 @@ public class Level {
         tileSetName = C.Textures.DEFAULT_TILE_SET.name;
         tileSetFileName = C.Textures.DEFAULT_TILE_SET.path;
         playerPosition = new Vector2f(0, 0);
+        player = new Player();
+        player.reset(this);
         map = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < (C.SCREEN_HEIGHT / tileSize); i += 1) {            
             map.add(new ArrayList<Integer>());
@@ -50,6 +54,7 @@ public class Level {
     public Level(String filePath, String name) {
         this.filePath = filePath;
         this.name = name;
+        player = new Player();
     }
     
     public void load() throws FileNotFoundException, ParseException {
@@ -86,6 +91,7 @@ public class Level {
         JSONObject playerObj = (JSONObject) obj.get("player");
         this.playerPosition = new Vector2f(Float.parseFloat(playerObj.get("posX").toString()),
                 Float.parseFloat(playerObj.get("posY").toString()));
+        player.reset(this);
     }
     
     public void save() throws IOException {
@@ -156,6 +162,7 @@ public class Level {
     
     public void setPlayerPosition(Vector2f playerPosition) {
         this.playerPosition = playerPosition;
+        this.player.reset(this);
     }
     
     public Vector2f getPlayerPosition() {
@@ -168,10 +175,11 @@ public class Level {
                 tileSet.render(map.get(i).get(j), j, i);
             }
         }
+        player.render(gc, g);
     }
 
     public void update(GameContainer gc, int delta) {
-        
+        player.update(gc, delta);
     }
     
     public int[] getTilePosition(Vector2f v) {

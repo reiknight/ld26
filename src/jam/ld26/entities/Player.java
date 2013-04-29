@@ -140,7 +140,8 @@ public class Player extends Entity {
         }
   
         // Check if any enemy see you
-        ArrayList<Entity> enemies = em.getEntityGroup(C.Groups.ENEMIES.name);
+        //ArrayList<Entity> enemies = em.getEntityGroup(C.Groups.ENEMIES.name);
+        ArrayList<Entity> enemies = new ArrayList<Entity>();
         
         if(!C.GOD_MODE) {
             for(int i = 0; i < enemies.size(); i++) {
