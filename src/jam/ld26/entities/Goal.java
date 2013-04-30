@@ -21,15 +21,15 @@ public class Goal extends Entity {
     private static int number = 0;
     protected Level lvl;
     
-    protected TileSet tileSet = new TileSet(C.Textures.TILE_SET.name, 
-            (Integer) C.Logic.TILE_SIZE.data);
+    protected TileSet tileSet = new TileSet(C.Textures.PORTAL.name, 
+            (Integer) C.Logic.TILE_SIZE.data*2);
     
     public Goal(float x, float y) {
         name = C.Entities.GOAL.name;
         group = C.Groups.GOAL.name;
         setPosition(new Vector2f(x, y));
-        setWidth((Integer) C.Logic.TILE_SIZE.data);
-        setHeight((Integer) C.Logic.TILE_SIZE.data);
+        setWidth((Integer) C.Logic.TILE_SIZE.data*2);
+        setHeight((Integer) C.Logic.TILE_SIZE.data*2);
     }
     
     public Goal(float x, float y, Level lvl) {
@@ -45,7 +45,7 @@ public class Goal extends Entity {
     @Override
     public void render(GameContainer gc, Graphics g) {
         super.render(gc, g);
-        tileSet.render(32, getX(), getY());
+        tileSet.render(0, getX(), getY());
     }
 
     

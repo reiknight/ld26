@@ -42,6 +42,7 @@ public class MainState extends ManagedGameState {
         //Load textures
         tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         tm.addTexture(C.Textures.ENEMIES_TILE_SET.name, C.Textures.ENEMIES_TILE_SET.path);
+        tm.addTexture(C.Textures.PORTAL.name, C.Textures.PORTAL.path);
         //Load sounds
         //Load sounds
         sm.addSound(C.Sounds.ENCENDIDO.name, C.Sounds.ENCENDIDO.path);
