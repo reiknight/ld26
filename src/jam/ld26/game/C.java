@@ -48,10 +48,10 @@ public class C {
         START_BACKGROUND("start_background", "resources/textures/start_background.png"),
         ZOMBIE("zombie", "resources/textures/zombie.png"),
         AVATAR("avatar", "resources/textures/zombie_0.png"),
-        BUTTON_CREDITS("button_credits", "resources/textures/button_credits.png"),
-        BUTTON_PLAY("button_play", "resources/textures/button_play.png"),
-        BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
-        BUTTON_EDITOR("button_editor", "resources/textures/button_instructions.png"),
+        BUTTON_CREDITS("button_credits", "resources/textures/credits.png"),
+        BUTTON_PLAY("button_play", "resources/textures/playmarcado.png"),
+        BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/instructions.png"),
+        BUTTON_EDITOR("button_editor", "resources/textures/editor.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
         DEFAULT_TILE_SET("default_tile_set", "resources/textures/mapaneon2.png"),
@@ -177,10 +177,10 @@ public class C {
     }
 
      public static enum Buttons {
-        START_GAME(Textures.BUTTON_PLAY.name, "", new Vector2f(230, 450), new Vector2f(45, 25)),
-        EDITOR(Textures.BUTTON_EDITOR.name, "", new Vector2f(420, 450), new Vector2f(45, 25)),        
-        INSTRUCTIONS(Textures.BUTTON_INSTRUCTIONS.name, "", new Vector2f(230, 550), new Vector2f(45, 25)),
-        CREDITS(Textures.BUTTON_CREDITS.name, "", new Vector2f(420, 550), new Vector2f(45, 25));
+        START_GAME(Textures.BUTTON_PLAY.name, "", new Vector2f(320, 450), new Vector2f(45, 25)),
+        EDITOR(Textures.BUTTON_EDITOR.name, "", new Vector2f(80, 548), new Vector2f(45, 25)),        
+        INSTRUCTIONS(Textures.BUTTON_INSTRUCTIONS.name, "", new Vector2f(280, 550), new Vector2f(45, 25)),
+        CREDITS(Textures.BUTTON_CREDITS.name, "", new Vector2f(560, 545), new Vector2f(45, 25));
         
 
         public String textureName;
