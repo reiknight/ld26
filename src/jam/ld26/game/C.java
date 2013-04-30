@@ -45,7 +45,7 @@ public class C {
     }
 
     public static enum Textures {
-        START_BACKGROUND("start_background", "resources/textures/start_background.png"),
+        START_BACKGROUND("start_background", "resources/textures/inicio.png"),
         ZOMBIE("zombie", "resources/textures/zombie.png"),
         AVATAR("avatar", "resources/textures/zombie_0.png"),
         BUTTON_CREDITS("button_credits", "resources/textures/credits.png"),

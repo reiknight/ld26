@@ -42,7 +42,6 @@ public class MainState extends ManagedGameState {
         evm.addEvent(C.Events.SOUND_OFF.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_M, 1000));
         evm.addEvent(C.Events.PAUSED.name, new InputEvent(InputEvent.KEYBOARD, Input.KEY_P, 500));
         //Load textures
-        tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         tm.addTexture(C.Textures.ENEMIES_TILE_SET.name, C.Textures.ENEMIES_TILE_SET.path);
         tm.addTexture(C.Textures.PORTAL.name, C.Textures.PORTAL.path);
         //Load sounds

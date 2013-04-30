@@ -56,7 +56,6 @@ public class LevelEditorState extends ManagedGameState {
         //Load textures
         tm.addTexture(C.Textures.DEFAULT_TILE_SET.name, C.Textures.DEFAULT_TILE_SET.path);
         tm.addTexture(C.Textures.ENEMIES_TILE_SET.name, C.Textures.ENEMIES_TILE_SET.path);
-        tm.addTexture(C.Textures.TILE_SET.name, C.Textures.TILE_SET.path);
         
         //Crosshair movement
         evm.addEvent(C.Events.CROSSHAIR_MOVED.name, new InputEvent(InputEvent.MOUSE_MOVE, 
