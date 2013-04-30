@@ -56,7 +56,9 @@ public class InstructionsLevelEditorState extends ManagedGameState {
         g.drawString("c - Erase current map", 100, 325);
         g.drawString("r - Run current map. Press again to return to the editor.", 100, 340);
         
-        g.drawString("press <ENTER> to enter editor", 460, 400);
+        g.drawString("ESC - Return to main menu.", 100, 380);
+        
+        g.drawString("press <ENTER> to enter editor", 460, 420);
 
         
         em.render(container, g);

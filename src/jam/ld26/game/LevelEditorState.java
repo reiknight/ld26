@@ -13,6 +13,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class LevelEditorState extends ManagedGameState {
     LevelEditor lvlEditor;
@@ -88,7 +90,7 @@ public class LevelEditorState extends ManagedGameState {
         lvlEditor.update(gc, delta, crosshair);
         
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {
-            gc.exit();
+            game.enterState(C.States.START_STATE.value, new FadeOutTransition(), new FadeInTransition());
         } else if(evm.isHappening(C.Events.CLICK_LEFT_EDITOR.name, gc)) {
             lvlEditor.handleClick();
         } else if(evm.isHappening(C.Events.LOAD_LEVEL.name, gc)) {
