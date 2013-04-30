@@ -124,12 +124,12 @@ public class Player extends Entity {
         position = lvl.getTilePosition(new Vector2f(x+(getWidth()/2),y));
         try {
             if(lvl.getMap().get(position[1]).get(position[0]) != 0) {
-                vy = jumping?.08f:0;
-                velY = jumping?.08f:0;
+                vy = jumping?.10f:0;
+                velY = jumping?.10f:0;
             }
         } catch(IndexOutOfBoundsException e) {
-            vy = jumping?.08f:0;
-            velY = jumping?.08f:0;
+            vy = jumping?.10f:0;
+            velY = jumping?.10f:0;
         }
         
         if(movimiento == 1) {
@@ -195,7 +195,7 @@ public class Player extends Entity {
             if(!jumping) {
                 sm.playSound(C.Sounds.JUMP.name);
                 jumping = true;
-                velY = -.08f;
+                velY = -.10f;
                 
             }
         }
