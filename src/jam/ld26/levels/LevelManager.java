@@ -43,6 +43,17 @@ public class LevelManager {
         return loadLevel();
     }
     
+    public Level nextLevelWithoutLoop() throws IOException {
+        if(levelNames.isEmpty()) {
+            return null;
+        }
+        currentLevelId = currentLevelId + 1;
+        if (currentLevelId >= levelNames.size()) {
+            return null;
+        }
+        return loadLevel();
+    }
+        
     public Level prevLevel() throws IOException {
         if(levelNames.isEmpty()) {
             return null;

@@ -16,6 +16,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class MainState extends ManagedGameState {
     private boolean paused = false;
@@ -73,8 +75,10 @@ public class MainState extends ManagedGameState {
     
     @Override
     public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
-        lvl.render(gc, g);
-        em.render(gc, g);
+        if (lvl != null) {
+            lvl.render(gc, g);
+            em.render(gc, g);
+        }
     }
 
     @Override
@@ -97,9 +101,12 @@ public class MainState extends ManagedGameState {
             Player p = lvl.getPlayer();
             if(p.won()) {
                 try {
-                    lvl = lvlManager.nextLevel();
+                    lvl = lvlManager.nextLevelWithoutLoop();
                 } catch (IOException ex) {
                     Logger.getLogger(MainState.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                }
+                if (lvl == null) {
+                    game.enterState(C.States.CREDITS_STATE.value, new FadeOutTransition(), new FadeInTransition());
                 }
             }
         }
