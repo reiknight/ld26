@@ -17,7 +17,7 @@ import org.newdawn.slick.state.transition.FadeOutTransition;
 
 public class StartState extends ManagedGameState {
     private Image background;
-    private Button button_start, button_instructions, button_credits;
+    private Button button_start, button_instructions, button_credits, button_editor;
     
     private boolean start_game = false;
     
@@ -39,6 +39,7 @@ public class StartState extends ManagedGameState {
         tm.addTexture(C.Textures.BUTTON_CREDITS.name, C.Textures.BUTTON_CREDITS.path);
         tm.addTexture(C.Textures.BUTTON_PLAY.name, C.Textures.BUTTON_PLAY.path);
         tm.addTexture(C.Textures.BUTTON_INSTRUCTIONS.name, C.Textures.BUTTON_INSTRUCTIONS.path);
+        tm.addTexture(C.Textures.BUTTON_EDITOR.name, C.Textures.BUTTON_EDITOR.path);
         tm.addTexture(C.Textures.CROSSHAIR.name, C.Textures.CROSSHAIR.path);
         //Load entities
         button_start = new Button(C.Buttons.START_GAME.textureName,
@@ -58,6 +59,12 @@ public class StartState extends ManagedGameState {
                 C.Buttons.INSTRUCTIONS.label, C.Buttons.CREDITS.labelPosition);
         button_credits.setPosition(C.Buttons.CREDITS.position);
         em.addEntity(button_credits.getName(), button_credits);
+        
+        button_editor = new Button(C.Buttons.EDITOR.textureName,
+                "button_editor", C.Groups.BUTTONS.name,
+                C.Buttons.EDITOR.label, C.Buttons.EDITOR.labelPosition);
+        button_editor.setPosition(C.Buttons.EDITOR.position);
+        em.addEntity(button_editor.getName(), button_editor);
         
         
         //Add Crosshair
@@ -93,6 +100,9 @@ public class StartState extends ManagedGameState {
             }
             else if(pm.testCollisionsEntity(crosshair, button_credits)) {
                 game.enterState(C.States.CREDITS_STATE.value, new FadeOutTransition(), new FadeInTransition());
+            }
+            else if(pm.testCollisionsEntity(crosshair, button_editor)) {
+                game.enterState(C.States.INSTRUCTIONS_LEVEL_EDITOR_STATE.value, new FadeOutTransition(), new FadeInTransition());
             }
         }
         if(evm.isHappening(C.Events.CLOSE_WINDOW.name, gc)) {

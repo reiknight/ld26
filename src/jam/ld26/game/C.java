@@ -17,6 +17,7 @@ public class C {
         MOVE_UP("move_up"),
         MOVE_DOWN("move_down"),
         BACK("back"),
+        FORWARD("forward"),
         CLICK_BUTTON("click_button"),
         CLICK_LEFT_EDITOR("click_left_editor"),
         CLICK_RIGHT_EDITOR("click_right_editor"),
@@ -50,6 +51,7 @@ public class C {
         BUTTON_CREDITS("button_credits", "resources/textures/button_credits.png"),
         BUTTON_PLAY("button_play", "resources/textures/button_play.png"),
         BUTTON_INSTRUCTIONS("button_instructions", "resources/textures/button_instructions.png"),
+        BUTTON_EDITOR("button_editor", "resources/textures/button_instructions.png"),
         CROSSHAIR("crosshair", "resources/textures/crosshair.png"),
         WALL("wall", "resources/textures/wall.png"),
         DEFAULT_TILE_SET("default_tile_set", "resources/textures/mapaneon2.png"),
@@ -142,6 +144,7 @@ public class C {
         PUBLISHER_STATE("publisher", 2),
         INSTRUCTIONS_STATE("instructions", 3),
         LEVEL_EDITOR_STATE("level_editor", 4),
+        INSTRUCTIONS_LEVEL_EDITOR_STATE("instructions_level_editor", 5),
         CREDITS_STATE("credits", 9);
 
         public String name;
@@ -174,9 +177,11 @@ public class C {
     }
 
      public static enum Buttons {
-        CREDITS(Textures.BUTTON_CREDITS.name, "", new Vector2f(150, 450), new Vector2f(45, 25)),
-        START_GAME(Textures.BUTTON_PLAY.name, "", new Vector2f(340, 450), new Vector2f(45, 25)),
-        INSTRUCTIONS(Textures.BUTTON_INSTRUCTIONS.name, "", new Vector2f(550, 450), new Vector2f(45, 25));
+        START_GAME(Textures.BUTTON_PLAY.name, "", new Vector2f(230, 450), new Vector2f(45, 25)),
+        EDITOR(Textures.BUTTON_EDITOR.name, "", new Vector2f(420, 450), new Vector2f(45, 25)),        
+        INSTRUCTIONS(Textures.BUTTON_INSTRUCTIONS.name, "", new Vector2f(230, 550), new Vector2f(45, 25)),
+        CREDITS(Textures.BUTTON_CREDITS.name, "", new Vector2f(420, 550), new Vector2f(45, 25));
+        
 
         public String textureName;
         public String label;
