@@ -40,10 +40,9 @@ public class InstructionsState extends ManagedGameState {
         
         g.drawString("You are a Square!", 100, 100);
         g.drawString("You need to go to the portal to save yourself.", 100, 115);
-//        g.drawString("Bring humanity to the next evolution!", 100, 130);
         
         g.drawString("Whatch out! Circles, Triangles and Diamonds want to kill you!", 100, 169);
-        g.drawString("Don't let them touch you.", 100, 184);
+        g.drawString("Don't let them touch you and escape through the portal!", 100, 184);
         
         
         g.drawString("Arrow Keys: Movement", 100, 215);
