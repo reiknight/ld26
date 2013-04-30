@@ -40,7 +40,7 @@ public class StartState extends ManagedGameState {
         tm.addTexture(C.Textures.BUTTON_PLAY.name, C.Textures.BUTTON_PLAY.path);
         tm.addTexture(C.Textures.BUTTON_INSTRUCTIONS.name, C.Textures.BUTTON_INSTRUCTIONS.path);
         tm.addTexture(C.Textures.BUTTON_EDITOR.name, C.Textures.BUTTON_EDITOR.path);
-        tm.addTexture(C.Textures.CROSSHAIR.name, C.Textures.CROSSHAIR.path);
+        tm.addTexture(C.Textures.ENEMIES_TILE_SET.name, C.Textures.ENEMIES_TILE_SET.path);
         //Load entities
         button_start = new Button(C.Buttons.START_GAME.textureName,
                 "button_start", C.Groups.BUTTONS.name,
